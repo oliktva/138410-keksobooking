@@ -1,12 +1,17 @@
 'use strict';
 
-
+/** @define {number} */
 var PIN_HALF_WIDTH = 28;
 var PIN_HEIGHT = 72;
 var MIN_PRICE = 1000;
 var MAX_PRICE = 1000000;
 var MIN_ROOMS = 1;
 var MAX_ROOMS = 5;
+var MIN_FEATURES = 1;
+var NUMBER_OF_PLACES = 8;
+/** @define {Object} */
+var TYPES_MAP = {flat: 'Квартира', house: 'Дом', bungalo: 'Бунгало'};
+
 
 var pinMap = document.querySelector('.tokyo__pin-map');
 var lodgeTemplate = document.querySelector('#lodge-template').content;
@@ -21,20 +26,20 @@ var checkTimes = ['12:00', '13:00', '14:00'];
 var offerFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
 /**
- * it generates integer random value from min to max inclusive
- * @param  {int} min - min value
- * @param  {int} max - max value
- * @return {int}     - integer random value
+ * generates integer random value from min to max inclusive
+ * @param  {number} min
+ * @param  {number} max
+ * @return {number} - integer random value
  */
 var getRandom = function (min, max) {
   return Math.floor(Math.random() * (max - min)) + min;
 };
 
 /**
- * it exchange the elements of array
- * @param  {Array} array - array for changing
- * @param  {int} i     - index of first element
- * @param  {int} j     - index of second element
+ * exchanges two elements of array
+ * @param  {Array} array
+ * @param  {number} i
+ * @param  {number} j
  */
 var exchangeArrayElements = function (array, i, j) {
   var tmp = array[i];
@@ -43,8 +48,8 @@ var exchangeArrayElements = function (array, i, j) {
 };
 
 /**
- * it shuffle of array by "Fisher–Yates shuffle (The modern algorithm)"
- * @param  {Array} array - array for shuffle
+ * shuffles of array by "Fisher–Yates shuffle (The modern algorithm)"
+ * @param  {Array} array
  */
 var shuffleArray = function (array) {
   for (var i = array.length - 1; i > 0; i--) {
@@ -56,12 +61,12 @@ var shuffleArray = function (array) {
 /**
  * Coordinates on a two-dimensional space
  * @typedef {Object} Location
- * @property {int} x - abscissa
- * @property {int} y - ordinate
+ * @property {number} x - abscissa
+ * @property {number} y - ordinate
  */
 
 /**
- * it create Location with integer x and y properties
+ * creates Location with integer x and y properties
  * @return {Location} - random point on the map
  */
 var createLocation = function () {
@@ -69,11 +74,11 @@ var createLocation = function () {
 };
 
 /**
- * it creates list of string values of random length
+ * creates list of string values of random length
  * @return {Array<string>} - array random string values from offerFeatures
  */
 var createFeatures = function () {
-  var num = getRandom(2, offerFeatures.length + 1);
+  var num = getRandom(MIN_FEATURES, offerFeatures.length + 1);
   shuffleArray(offerFeatures);
   var features = [];
   for (var i = 0; i < num; i++) {
@@ -93,10 +98,10 @@ var createFeatures = function () {
  * @typedef {Object} Offer
  * @property {string} title - offer's title from offerTitles
  * @property {string} address - offer's address
- * @property {int} price - offer's price
+ * @property {number} price - offer's price
  * @property {string} type - offer's type from offerTypes
- * @property {int} rooms - offer's number of rooms
- * @property {int} guests - offer's number of guests
+ * @property {number} rooms - offer's number of rooms
+ * @property {number} guests - offer's number of guests
  * @property {string} checkin - offer's checkin time from checkTimes
  * @property {string} checkout - offer's checkout time from checkTimes
  * @property {Array<string>} features - offer's features from offerFeatures
@@ -113,10 +118,10 @@ var createFeatures = function () {
   */
 
 /**
- * it creates place object with random values (except avatar and title)
- * @param  {[type]} avatarNumber - avatar path
- * @param  {[type]} title        - title value
- * @return {Place}              - generated data about place
+ * creates place object with random values (except avatar and title)
+ * @param  {string} avatarNumber - avatar path
+ * @param  {string} title - title value
+ * @return {Place} - generated data about place
  */
 var createPlace = function (avatarNumber, title) {
   var place = {};
@@ -143,9 +148,9 @@ var createPlace = function (avatarNumber, title) {
 };
 
 /**
- * it creates array of places of given length
- * @param  {int} number - number of generated objects
- * @return {Array<Place>}        - array of Place objects
+ * creates array of places of given length
+ * @param  {number} number - number of generated objects
+ * @return {Array<Place>} - array of Place objects
  */
 var createPlaces = function (number) {
   var places = [];
@@ -158,12 +163,12 @@ var createPlaces = function (number) {
 };
 
 /**
- * it formats value dividing into digits
- * @param  {int} price - value for formatting
- * @return {string}       - formatting value
+ * formats value dividing into digits
+ * @param  {number} price - value for formatting
+ * @return {string} - formatting value
  */
 var getFormattedPrice = function (price) {
-  if (price > 10000) {
+  if (price >= 10000) {
     return price.toString().replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, '$1 ');
   } else {
     return price.toString();
@@ -171,22 +176,17 @@ var getFormattedPrice = function (price) {
 };
 
 /**
- * it correlate offer value from offerTypes to ru localization
+ * correlates offer value from offerTypes to ru localization
  * @param  {string} type - string value from offerTypes
- * @return {string}      - localization value for type
+ * @return {string} - localization value for type
  */
 var getOfferType = function (type) {
-  var typesMap = {
-    flat: 'Квартира',
-    house: 'Дом',
-    bungalo: 'Бунгало'
-  };
-  return typesMap[type];
+  return TYPES_MAP[type];
 };
 
 /**
  * sorting array of places by location.y
- * @param  {Array<Place>} array - array for sorting
+ * @param  {Array<Place>} array
  */
 var sortingPlacesByLocationY = function (array) {
   array.sort(function (a, b) {
@@ -195,10 +195,10 @@ var sortingPlacesByLocationY = function (array) {
 };
 
 /**
- * it create DOM element for pin
- * @param  {Author} author   - object with data about author
+ * creates DOM element for pin
+ * @param  {Author} author - object with data about author
  * @param  {Location} location - object with data about location
- * @return {Element}        - element for pin
+ * @return {Element} - element for pin
  */
 var getPinElement = function (author, location) {
   var img = '<img src="' + author.avatar + '" class="rounded" width="40" height="40">';
@@ -211,8 +211,8 @@ var getPinElement = function (author, location) {
 };
 
 /**
- * it render pins on the page
- * @param  {Array<Place>} places - array of Place
+ * render pins on the page
+ * @param  {Array<Place>} places
  */
 var renderPins = function (places) {
   var fragment = document.createDocumentFragment();
@@ -223,11 +223,11 @@ var renderPins = function (places) {
 };
 
 /**
- * it render window with certain element of places
- * @param  {Place} place - certain element of places
- * @return {Element}       - element with window
+ * generates element: window with certain element of places
+ * @param  {Place} place
+ * @return {Element}
  */
-var renderOfferDialog = function (place) {
+var getOfferDialog = function (place) {
   var lodgeElement = lodgeTemplate.cloneNode(true);
   lodgeElement.querySelector('.lodge__title').textContent = place.offer.title;
   lodgeElement.querySelector('.lodge__address').textContent = place.offer.address;
@@ -243,9 +243,17 @@ var renderOfferDialog = function (place) {
   return lodgeElement;
 };
 
+/**
+ * renders window with element of places
+ * @param  {number} index
+ */
+var renderOfferDialog = function (index) {
+  offerDialog.replaceChild(getOfferDialog(places[index]), dialogPanel);
+  dialogTitle.querySelector('img').setAttribute('src', places[index].author.avatar);
+};
 
-var places = createPlaces(8);
+
+var places = createPlaces(NUMBER_OF_PLACES);
 sortingPlacesByLocationY(places);
 renderPins(places);
-offerDialog.replaceChild(renderOfferDialog(places[0]), dialogPanel);
-dialogTitle.querySelector('img').setAttribute('src', places[0].author.avatar);
+renderOfferDialog(0);
