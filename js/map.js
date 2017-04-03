@@ -1,15 +1,22 @@
 'use strict';
 
-/** @define {number} */
+/** @constant {number} */
 var PIN_HALF_WIDTH = 28;
+/** @constant {number} */
 var PIN_HEIGHT = 72;
+/** @constant {number} */
 var MIN_PRICE = 1000;
+/** @constant {number} */
 var MAX_PRICE = 1000000;
+/** @constant {number} */
 var MIN_ROOMS = 1;
+/** @constant {number} */
 var MAX_ROOMS = 5;
+/** @constant {number} */
 var MIN_FEATURES = 1;
+/** @constant {number} */
 var NUMBER_OF_PLACES = 8;
-/** @define {Object} */
+/** @constant {Object} */
 var TYPES_MAP = {flat: 'Квартира', house: 'Дом', bungalo: 'Бунгало'};
 
 
