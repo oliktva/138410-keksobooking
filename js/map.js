@@ -16,6 +16,14 @@ var MAX_ROOMS = 5;
 var MIN_FEATURES = 1;
 /** @constant {number} */
 var NUMBER_OF_PLACES = 8;
+/** @constant {number} */
+var MIN_X = 300;
+/** @constant {number} */
+var MAX_X = 900;
+/** @constant {number} */
+var MIN_Y = 100;
+/** @constant {number} */
+var MAX_Y = 500;
 /** @constant {Object} */
 var TYPES_MAP = {flat: 'Квартира', house: 'Дом', bungalo: 'Бунгало'};
 
@@ -77,7 +85,7 @@ var shuffleArray = function (array) {
  * @return {Location} - random point on the map
  */
 var createLocation = function () {
-  return {x: getRandom(300, 901), y: getRandom(100, 501)};
+  return {x: getRandom(MIN_X, MAX_X + 1), y: getRandom(MIN_Y, MAX_Y + 1)};
 };
 
 /**
