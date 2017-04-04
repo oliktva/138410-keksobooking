@@ -2,43 +2,51 @@
 
 /** @constant {number} */
 var PIN_HALF_WIDTH = 28;
+
 /** @constant {number} */
 var PIN_HEIGHT = 72;
+
 /** @constant {number} */
 var MIN_PRICE = 1000;
+
 /** @constant {number} */
 var MAX_PRICE = 1000000;
+
 /** @constant {number} */
 var MIN_ROOMS = 1;
+
 /** @constant {number} */
 var MAX_ROOMS = 5;
+
 /** @constant {number} */
 var MIN_FEATURES = 1;
+
 /** @constant {number} */
 var NUMBER_OF_PLACES = 8;
-/** @constant {number} */
-var MIN_X = 300;
-/** @constant {number} */
-var MAX_X = 900;
-/** @constant {number} */
-var MIN_Y = 100;
-/** @constant {number} */
-var MAX_Y = 500;
+
 /** @constant {Object} */
 var TYPES_MAP = {flat: 'Квартира', house: 'Дом', bungalo: 'Бунгало'};
 
+/** @constant {Array} */
+var AVATARS = [1, 2, 3, 4, 5, 6, 7, 8];
+
+/** @constant {Array} */
+var OFFER_TITLES = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
+
+/** @constant {Array} */
+var OFFER_TYPES = ['flat', 'house', 'bungalo'];
+
+/** @constant {Array} */
+var CHECK_TIMES = ['12:00', '13:00', '14:00'];
+
+/** @constant {Array} */
+var OFFER_FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
 var pinMap = document.querySelector('.tokyo__pin-map');
 var lodgeTemplate = document.querySelector('#lodge-template').content;
 var offerDialog = document.querySelector('#offer-dialog');
 var dialogPanel = offerDialog.querySelector('.dialog__panel');
 var dialogTitle = offerDialog.querySelector('.dialog__title');
-
-var avatars = [1, 2, 3, 4, 5, 6, 7, 8];
-var offerTitles = ['Большая уютная квартира', 'Маленькая неуютная квартира', 'Огромный прекрасный дворец', 'Маленький ужасный дворец', 'Красивый гостевой домик', 'Некрасивый негостеприимный домик', 'Уютное бунгало далеко от моря', 'Неуютное бунгало по колено в воде'];
-var offerTypes = ['flat', 'house', 'bungalo'];
-var checkTimes = ['12:00', '13:00', '14:00'];
-var offerFeatures = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
 
 /**
  * generates integer random value from min to max inclusive
@@ -65,12 +73,15 @@ var exchangeArrayElements = function (array, i, j) {
 /**
  * shuffles of array by "Fisher–Yates shuffle (The modern algorithm)"
  * @param  {Array} array
+ * @return {Array}
  */
 var shuffleArray = function (array) {
+  var localArray = array.slice(0);
   for (var i = array.length - 1; i > 0; i--) {
     var j = getRandom(0, i + 1);
     exchangeArrayElements(array, i, j);
   }
+  return localArray;
 };
 
 /**
@@ -85,21 +96,18 @@ var shuffleArray = function (array) {
  * @return {Location} - random point on the map
  */
 var createLocation = function () {
-  return {x: getRandom(MIN_X, MAX_X + 1), y: getRandom(MIN_Y, MAX_Y + 1)};
+  return {x: getRandom(300, 901), y: getRandom(100, 501)};
 };
 
 /**
  * creates list of string values of random length
- * @return {Array<string>} - array random string values from offerFeatures
+ * @param  {number} min
+ * @param  {Array} array
+ * @return {Array}
  */
-var createFeatures = function () {
-  var num = getRandom(MIN_FEATURES, offerFeatures.length + 1);
-  shuffleArray(offerFeatures);
-  var features = [];
-  for (var i = 0; i < num; i++) {
-    features[i] = offerFeatures[i];
-  }
-  return features;
+var createArrayRandomLength = function (min, array) {
+  var num = getRandom(min, array.length + 1);
+  return shuffleArray(array).slice(0, num + 1);
 };
 
 /**
@@ -135,28 +143,29 @@ var createFeatures = function () {
 /**
  * creates place object with random values (except avatar and title)
  * @param  {string} avatarNumber - avatar path
- * @param  {string} title - title value
+ * @param  {string} offerTitle - title value
  * @return {Place} - generated data about place
  */
-var createPlace = function (avatarNumber, title) {
+var createPlace = function (avatarNumber, offerTitle) {
   var place = {};
   var avatarPath = 'img/avatars/user0' + avatarNumber + '.png';
   place.author = {avatar: avatarPath};
 
   place.location = createLocation();
 
-  var offer = {};
-  offer.title = title;
-  offer.address = place.location.x + ', ' + place.location.y;
-  offer.price = getRandom(MIN_PRICE, MAX_PRICE + 1);
-  offer.type = offerTypes[getRandom(0, offerTypes.length)];
-  offer.rooms = getRandom(MIN_ROOMS, MAX_ROOMS + 1);
-  offer.guests = getRandom(MIN_ROOMS + 3, MAX_ROOMS + 4);
-  offer.checkin = checkTimes[getRandom(0, checkTimes.length)];
-  offer.checkout = checkTimes[getRandom(0, checkTimes.length)];
-  offer.features = createFeatures();
-  offer.description = '';
-  offer.photos = [];
+  var offer = {
+    title: offerTitle,
+    address: place.location.x + ', ' + place.location.y,
+    price: getRandom(MIN_PRICE, MAX_PRICE + 1),
+    type: OFFER_TYPES[getRandom(0, OFFER_TYPES.length)],
+    rooms: getRandom(MIN_ROOMS, MAX_ROOMS + 1),
+    guests: getRandom(MIN_ROOMS + 3, MAX_ROOMS + 4),
+    checkin: CHECK_TIMES[getRandom(0, CHECK_TIMES.length)],
+    checkout: CHECK_TIMES[getRandom(0, CHECK_TIMES.length)],
+    features: createArrayRandomLength(MIN_FEATURES, OFFER_FEATURES),
+    description: '',
+    photos: []
+  };
 
   place.offer = offer;
   return place;
@@ -169,8 +178,8 @@ var createPlace = function (avatarNumber, title) {
  */
 var createPlaces = function (number) {
   var places = [];
-  shuffleArray(avatars);
-  shuffleArray(offerTitles);
+  var avatars = shuffleArray(AVATARS);
+  var offerTitles = shuffleArray(OFFER_TITLES);
   for (var i = 0; i < number; i++) {
     places[i] = createPlace(avatars[i], offerTitles[i]);
   }
@@ -191,19 +200,10 @@ var getFormattedPrice = function (price) {
 };
 
 /**
- * correlates offer value from offerTypes to ru localization
- * @param  {string} type - string value from offerTypes
- * @return {string} - localization value for type
- */
-var getOfferType = function (type) {
-  return TYPES_MAP[type];
-};
-
-/**
  * sorting array of places by location.y
  * @param  {Array<Place>} array
  */
-var sortingPlacesByLocationY = function (array) {
+var sortPlacesByLocationY = function (array) {
   array.sort(function (a, b) {
     return a.location.y - b.location.y;
   });
@@ -247,7 +247,7 @@ var getOfferDialog = function (place) {
   lodgeElement.querySelector('.lodge__title').textContent = place.offer.title;
   lodgeElement.querySelector('.lodge__address').textContent = place.offer.address;
   lodgeElement.querySelector('.lodge__price').innerHTML = getFormattedPrice(place.offer.price) + ' &#x20bd;/ночь';
-  lodgeElement.querySelector('.lodge__type').textContent = getOfferType(place.offer.type);
+  lodgeElement.querySelector('.lodge__type').textContent = TYPES_MAP[place.offer.type];
   lodgeElement.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + place.offer.guests + ' гостей в ' + place.offer.rooms + ' комнатах';
   lodgeElement.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + place.offer.checkin + ', выезд до ' + place.offer.checkout;
   for (var i = 0; i < place.offer.features.length; i++) {
@@ -260,15 +260,15 @@ var getOfferDialog = function (place) {
 
 /**
  * renders window with element of places
- * @param  {number} index
+ * @param  {Place} place
  */
-var renderOfferDialog = function (index) {
-  offerDialog.replaceChild(getOfferDialog(places[index]), dialogPanel);
-  dialogTitle.querySelector('img').setAttribute('src', places[index].author.avatar);
+var renderOfferDialog = function (place) {
+  offerDialog.replaceChild(getOfferDialog(place), dialogPanel);
+  dialogTitle.querySelector('img').setAttribute('src', place.author.avatar);
 };
 
 
 var places = createPlaces(NUMBER_OF_PLACES);
-sortingPlacesByLocationY(places);
+sortPlacesByLocationY(places);
 renderPins(places);
-renderOfferDialog(0);
+renderOfferDialog(places[0]);
