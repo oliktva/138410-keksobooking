@@ -629,6 +629,11 @@ select option:hover {
     cursor: pointer;
 }
 
+.pin:focus {
+    outline: none;
+    box-shadow: 0 0 5px 2px #fd583e;
+}
+
 .pin--active {
     background-image: url("../img/pin-active.png");
 }
@@ -654,4 +659,8 @@ select option:hover {
 
 .rounded {
     border-radius: 50%;
+}
+
+.hidden {
+  display: none;
 }
