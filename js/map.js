@@ -206,7 +206,6 @@ var sortPlacesByLocationY = function (array) {
  * creates DOM element for pin
  * @param  {Author} author
  * @param  {Location} location
- * @param {number} index
  * @return {Element}
  */
 var getPinElement = function (author, location) {
