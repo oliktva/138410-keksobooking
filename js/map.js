@@ -394,6 +394,9 @@ time.addEventListener('change', function () {
   timeout.value = timeValue;
 });
 
+/**
+ * checks validity of fields of form
+ */
 var checkValidity = function () {
   if (noticeForm.querySelectorAll(':invalid').length === 0) {
     noticeForm.reset();
