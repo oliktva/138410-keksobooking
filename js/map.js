@@ -365,3 +365,39 @@ places.forEach(function (item, i) {
 });
 
 dialogClose.addEventListener('click', onDialogCloseClick);
+
+var noticeForm = document.querySelector('.notice__form');
+var price = noticeForm.querySelector('#price');
+var type = noticeForm.querySelector('#type');
+var roomNumber = noticeForm.querySelector('#room_number');
+var capacity = noticeForm.querySelector('#capacity');
+var time = noticeForm.querySelector('#time');
+var timeout = noticeForm.querySelector('#timeout');
+var submitButton = noticeForm.querySelector('.form__submit');
+
+var priceForType = {flat: 1000, hovel: 0, palace: 10000};
+var guestsForRooms = {room_1: 'no_guests', rooms_2: 'guests_3', rooms_100: 'guests_3'};
+
+type.addEventListener('change', function () {
+  var typeValue = priceForType[type.options[type.selectedIndex].value];
+  price.setAttribute('min', typeValue);
+  price.value = typeValue;
+});
+
+roomNumber.addEventListener('change', function () {
+  var guestsValue = guestsForRooms[roomNumber.options[roomNumber.selectedIndex].value];
+  capacity.value = guestsValue;
+});
+
+time.addEventListener('change', function () {
+  var timeValue = time.options[time.selectedIndex].value;
+  timeout.value = timeValue;
+});
+
+var checkValidity = function () {
+  if (noticeForm.querySelectorAll(':invalid').length === 0) {
+    noticeForm.reset();
+  }
+};
+
+submitButton.addEventListener('click', checkValidity);
