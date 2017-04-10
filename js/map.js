@@ -373,7 +373,6 @@ var roomNumber = noticeForm.querySelector('#room_number');
 var capacity = noticeForm.querySelector('#capacity');
 var time = noticeForm.querySelector('#time');
 var timeout = noticeForm.querySelector('#timeout');
-var submitButton = noticeForm.querySelector('.form__submit');
 
 var priceForType = {flat: '1000', hovel: '0', palace: '10000'};
 var guestsForRooms = {room_1: 'no_guests', rooms_2: 'guests_3', rooms_100: 'guests_3'};
@@ -399,15 +398,11 @@ var setInputValid = function (evt) {
 /**
  * @param  {event} evt
  */
-var checkValidity = function (evt) {
+var onInvalidForm = function (evt) {
   var invalidElements = noticeForm.querySelectorAll(':invalid');
-  if (invalidElements.length === 0) {
-    noticeForm.reset();
-  } else {
-    for (var i = 0; i < invalidElements.length; i++) {
-      invalidElements[i].classList.add('invalid');
-      invalidElements[i].addEventListener('keyup', setInputValid);
-    }
+  for (var i = 0; i < invalidElements.length; i++) {
+    invalidElements[i].classList.add('invalid');
+    invalidElements[i].addEventListener('keyup', setInputValid);
   }
 };
 
@@ -426,7 +421,8 @@ time.addEventListener('change', function () {
   timeout.value = timeValue;
 });
 
-submitButton.addEventListener('click', checkValidity);
+noticeForm.addEventListener('invalid', onInvalidForm, true);
 noticeForm.addEventListener('submit', function (evt) {
   evt.preventDefault();
+  noticeForm.reset();
 });
