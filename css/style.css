@@ -82,7 +82,7 @@ select option:hover {
     background-color: #ff6547;
 }
 
-input:invalid, input:invalid:focus, textarea:invalid:focus {
+input.invalid, input.invalid:focus, textarea.invalid:focus {
     border: 2px solid #f42c04;
 }
 
