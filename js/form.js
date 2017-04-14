@@ -12,14 +12,7 @@
 
   var priceForType = {'flat': '1000', 'hovel': '0', 'palace': '10000'};
   var guestsForRooms = {'room_1': 'no_guests', 'rooms_2': 'guests_3', 'rooms_100': 'guests_3'};
-
-  /**
-   * @param  {Element} field - necessarily select
-   * @return {string}
-   */
-  var getSelectedValue = function (field) {
-    return field.options[field.selectedIndex].value;
-  };
+  var timeCheckinForTimeCheckout = {'12': '12', '13': '13', '14': '14'};
 
   /**
    * @param  {event} evt
@@ -29,6 +22,14 @@
       evt.target.classList.remove('invalid');
       evt.target.removeEventListener('keyup', setInputValid);
     }
+  };
+
+  var setAttributeToElement = function (element, value) {
+    element.setAttribute('min', value);
+  };
+
+  var setValueToElement = function (element, value) {
+    element.value = value;
   };
 
   /**
@@ -53,18 +54,15 @@
   address.value = getCoordsValue();
 
   type.addEventListener('change', function () {
-    var typeValue = priceForType[getSelectedValue(type)];
-    price.setAttribute('min', typeValue);
+    window.synchronizeFields(type, price, priceForType, setAttributeToElement);
   });
 
   roomNumber.addEventListener('change', function () {
-    var guestsValue = guestsForRooms[getSelectedValue(roomNumber)];
-    capacity.value = guestsValue;
+    window.synchronizeFields(roomNumber, capacity, guestsForRooms, setValueToElement);
   });
 
   time.addEventListener('change', function () {
-    var timeValue = getSelectedValue(time);
-    timeout.value = timeValue;
+    window.synchronizeFields(time, timeout, timeCheckinForTimeCheckout, setValueToElement);
   });
 
   noticeForm.addEventListener('invalid', onInvalidForm, true);
