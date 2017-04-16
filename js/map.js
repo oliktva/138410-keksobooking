@@ -24,4 +24,5 @@
     });
   });
   window.card.setCloseClickEvent();
+  window.mainPin.setDraggable();
 })();

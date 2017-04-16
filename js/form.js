@@ -8,6 +8,7 @@
   var capacity = noticeForm.querySelector('#capacity');
   var time = noticeForm.querySelector('#time');
   var timeout = noticeForm.querySelector('#timeout');
+  var address = noticeForm.querySelector('#address');
 
   var priceForType = {'flat': '1000', 'hovel': '0', 'palace': '10000'};
   var guestsForRooms = {'room_1': 'no_guests', 'rooms_2': 'guests_3', 'rooms_100': 'guests_3'};
@@ -41,6 +42,16 @@
     }
   };
 
+  /**
+   * @return {string}
+   */
+  var getCoordsValue = function () {
+    return 'x: ' + window.mainPin.getCoords().x + ' y: ' + window.mainPin.getCoords().y;
+  };
+
+  address.setAttribute('readonly', 'readonly');
+  address.value = getCoordsValue();
+
   type.addEventListener('change', function () {
     var typeValue = priceForType[getSelectedValue(type)];
     price.setAttribute('min', typeValue);
@@ -61,4 +72,6 @@
     evt.preventDefault();
     noticeForm.reset();
   });
+
+  window.mainPin.syncWithElement(address, getCoordsValue);
 })();

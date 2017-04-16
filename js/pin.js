@@ -57,6 +57,9 @@ window.pin = (function () {
     element.classList.add('pin--active');
   };
 
+  /**
+   * @return {Array<Element>}
+   */
   var getPinsElements = function () {
     return pinMap.querySelectorAll('.pin:not(.pin__main)');
   };
