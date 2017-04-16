@@ -1,9 +1,10 @@
 'use strict';
 
-window.card = (function () {
+window.showCard = (function () {
   var offerDialog = document.querySelector('#offer-dialog');
   var lodgeTemplate = document.querySelector('#lodge-template').content;
   var dialogClose = offerDialog.querySelector('.dialog__close');
+  var cb;
 
   /**
    * generates element: window with certain element of places
@@ -38,13 +39,16 @@ window.card = (function () {
   /**
    * open dialog window
    * @param  {Place} place
+   * @param {Function} callback
    */
-  var openOfferDialog = function (place) {
+  var openOfferDialog = function (place, callback) {
+    cb = callback;
     renderOfferDialog(place);
     if (window.visibility.isElementInvisible(offerDialog)) {
       window.visibility.setElementVisible(offerDialog, true);
     }
 
+    dialogClose.addEventListener('click', onDialogCloseClick);
     dialogClose.addEventListener('keydown', onOfferDialogKeydown);
     document.addEventListener('keydown', onDocumentEscKeydown);
   };
@@ -54,7 +58,7 @@ window.card = (function () {
    */
   var closeOfferDialog = function () {
     window.visibility.setElementVisible(offerDialog, false);
-    window.pin.unsetActivePin();
+    cb();
 
     dialogClose.removeEventListener('keydown', onOfferDialogKeydown);
     document.removeEventListener('keydown', onDocumentEscKeydown);
@@ -86,13 +90,5 @@ window.card = (function () {
     closeOfferDialog();
   };
 
-  var setCloseClickEvent = function () {
-    dialogClose.addEventListener('click', onDialogCloseClick);
-  };
-
-  return {
-    renderOfferDialog: renderOfferDialog,
-    openOfferDialog: openOfferDialog,
-    setCloseClickEvent: setCloseClickEvent
-  };
+  return openOfferDialog;
 })();
