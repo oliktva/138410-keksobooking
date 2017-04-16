@@ -2,22 +2,24 @@
 
 window.synchronizeFields = (function () {
   /**
-   * @param  {Element} field - necessarily select
-   * @return {string}
+   * @param  {Element} field
+   * @param  {Array} array
+   * @return {number}
    */
-  var getSelectedValue = function (field) {
-    return field.options[field.selectedIndex].value;
+  var getSelectedIndex = function (field, array) {
+    return array.indexOf(field.options[field.selectedIndex].value);
   };
 
   /**
-   * @param  {Element} element1
-   * @param  {Element} element2
-   * @param  {Object} map
+   * @param  {ELement} elementFrom
+   * @param  {Element} elementTo
+   * @param  {Array} arrayKey
+   * @param  {Array} arrayValue
    * @param  {Function} callback
    */
-  var synchronizeFields = function (element1, element2, map, callback) {
-    var value = map[getSelectedValue(element1)];
-    callback(element2, value);
+  var synchronizeFields = function (elementFrom, elementTo, arrayKey, arrayValue, callback) {
+    var value = arrayValue[getSelectedIndex(elementFrom, arrayKey)];
+    callback(elementTo, value);
   };
 
   return synchronizeFields;
