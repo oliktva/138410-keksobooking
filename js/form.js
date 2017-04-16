@@ -26,10 +26,18 @@
     }
   };
 
+  /**
+   * @param  {Element} element
+   * @param  {string} value
+   */
   var setAttributeToElement = function (element, value) {
     element.setAttribute('min', value);
   };
 
+  /**
+   * @param  {Element} element
+   * @param  {string} value
+   */
   var setValueToElement = function (element, value) {
     element.value = value;
   };

@@ -65,7 +65,7 @@ window.showCard = (function () {
   };
 
   /**
-   * @param  {event} evt
+   * @param  {Event} evt
    */
   var onDocumentEscKeydown = function (evt) {
     if (window.checkKey.isEsc(evt)) {
@@ -74,7 +74,7 @@ window.showCard = (function () {
   };
 
   /**
-   * @param  {event} evt
+   * @param  {Event} evt
    */
   var onOfferDialogKeydown = function (evt) {
     if (window.checkKey.isEnter(evt)) {
@@ -83,7 +83,7 @@ window.showCard = (function () {
   };
 
   /**
-   * @param  {event} evt
+   * @param  {Event} evt
    */
   var onDialogCloseClick = function (evt) {
     evt.preventDefault();
