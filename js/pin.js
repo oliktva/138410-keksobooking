@@ -4,9 +4,7 @@ window.pin = (function () {
   /** @enum {number} */
   var PlaceDimension = {
     PIN_WIDTH: 56,
-    PIN_HEIGHT: 72,
-    MAIN_PIN_WIDTH: 75,
-    MAIN_PIN_HEIGHT: 94
+    PIN_HEIGHT: 72
   };
 
   var pinMap = document.querySelector('.tokyo__pin-map');
@@ -59,27 +57,17 @@ window.pin = (function () {
     element.classList.add('pin--active');
   };
 
+  /**
+   * @return {Array<Element>}
+   */
   var getPinsElements = function () {
     return pinMap.querySelectorAll('.pin:not(.pin__main)');
-  };
-
-  var getMainPinElement = function () {
-    return pinMap.querySelector('.pin__main');
-  };
-
-  var getMainPinDimension = function () {
-    return {
-      width: PlaceDimension.MAIN_PIN_WIDTH,
-      height: PlaceDimension.MAIN_PIN_HEIGHT
-    };
   };
 
   return {
     renderPins: renderPins,
     unsetActivePin: unsetActivePin,
     setActivePin: setActivePin,
-    getPinsElements: getPinsElements,
-    getMainPinElement: getMainPinElement,
-    getMainPinDimension: getMainPinDimension
+    getPinsElements: getPinsElements
   };
 })();

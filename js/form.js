@@ -9,7 +9,6 @@
   var time = noticeForm.querySelector('#time');
   var timeout = noticeForm.querySelector('#timeout');
   var address = noticeForm.querySelector('#address');
-  var mainPin = window.pin.getMainPinElement();
 
   var priceForType = {'flat': '1000', 'hovel': '0', 'palace': '10000'};
   var guestsForRooms = {'room_1': 'no_guests', 'rooms_2': 'guests_3', 'rooms_100': 'guests_3'};
@@ -42,9 +41,16 @@
       invalidElements[i].addEventListener('keyup', setInputValid);
     }
   };
-  address.setAttribute('disabled', 'disabled');
-  address.value = 'x: ' + (mainPin.offsetLeft + Math.floor(window.pin.getMainPinDimension().width / 2))
-  + ' y: ' + (mainPin.offsetTop + window.pin.getMainPinDimension().height);
+
+  /**
+   * @return {string}
+   */
+  var getCoordsValue = function () {
+    return 'x: ' + window.mainPin.getCoords().x + ' y: ' + window.mainPin.getCoords().y;
+  };
+
+  address.setAttribute('readonly', 'readonly');
+  address.value = getCoordsValue();
 
   type.addEventListener('change', function () {
     var typeValue = priceForType[getSelectedValue(type)];
@@ -67,10 +73,5 @@
     noticeForm.reset();
   });
 
-  mainPin.addEventListener('mouseup', function (evt) {
-    var element = evt.target.tagName.toLowerCase() === 'div' ? evt.target : evt.target.parentNode;
-    var x = element.offsetLeft + Math.floor(window.pin.getMainPinDimension().width / 2);
-    var y = element.offsetTop + window.pin.getMainPinDimension().height;
-    address.value = 'x: ' + x + ' y: ' + y;
-  });
+  window.mainPin.syncWithElement(address, getCoordsValue);
 })();
