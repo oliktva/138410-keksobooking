@@ -11,7 +11,7 @@ window.showCard = (function () {
    * @param  {Place} place
    * @return {Element}
    */
-  var getOfferDialog = function (place) {
+  var getCardData = function (place) {
     var lodgeElement = lodgeTemplate.cloneNode(true);
     lodgeElement.querySelector('.lodge__title').textContent = place.offer.title;
     lodgeElement.querySelector('.lodge__address').textContent = place.offer.address;
@@ -31,8 +31,8 @@ window.showCard = (function () {
    * renders window with element of places
    * @param  {Place} place
    */
-  var renderOfferDialog = function (place) {
-    offerDialog.replaceChild(getOfferDialog(place), offerDialog.querySelector('.dialog__panel'));
+  var renderCard = function (place) {
+    offerDialog.replaceChild(getCardData(place), offerDialog.querySelector('.dialog__panel'));
     offerDialog.querySelector('.dialog__title').querySelector('img').setAttribute('src', place.author.avatar);
   };
 
@@ -41,26 +41,26 @@ window.showCard = (function () {
    * @param  {Place} place
    * @param {Function} callback
    */
-  var openOfferDialog = function (place, callback) {
+  var showCard = function (place, callback) {
     cb = callback;
-    renderOfferDialog(place);
+    renderCard(place);
     if (window.visibility.isElementInvisible(offerDialog)) {
       window.visibility.setElementVisible(offerDialog, true);
     }
 
-    dialogClose.addEventListener('click', onDialogCloseClick);
-    dialogClose.addEventListener('keydown', onOfferDialogKeydown);
+    dialogClose.addEventListener('click', onCardCloseClick);
+    dialogClose.addEventListener('keydown', onCardKeydown);
     document.addEventListener('keydown', onDocumentEscKeydown);
   };
 
   /**
    * close dialog window
    */
-  var closeOfferDialog = function () {
+  var closeCard = function () {
     window.visibility.setElementVisible(offerDialog, false);
     cb();
 
-    dialogClose.removeEventListener('keydown', onOfferDialogKeydown);
+    dialogClose.removeEventListener('keydown', onCardKeydown);
     document.removeEventListener('keydown', onDocumentEscKeydown);
   };
 
@@ -69,26 +69,26 @@ window.showCard = (function () {
    */
   var onDocumentEscKeydown = function (evt) {
     if (window.checkKey.isEsc(evt)) {
-      closeOfferDialog();
+      closeCard();
     }
   };
 
   /**
    * @param  {Event} evt
    */
-  var onOfferDialogKeydown = function (evt) {
+  var onCardKeydown = function (evt) {
     if (window.checkKey.isEnter(evt)) {
-      closeOfferDialog();
+      closeCard();
     }
   };
 
   /**
    * @param  {Event} evt
    */
-  var onDialogCloseClick = function (evt) {
+  var onCardCloseClick = function (evt) {
     evt.preventDefault();
-    closeOfferDialog();
+    closeCard();
   };
 
-  return openOfferDialog;
+  return showCard;
 })();

@@ -30,7 +30,7 @@
    * @param  {Element} element
    * @param  {string} value
    */
-  var setAttributeToElement = function (element, value) {
+  var setMinValue = function (element, value) {
     element.setAttribute('min', value);
   };
 
@@ -64,7 +64,7 @@
   address.value = getCoordsValue();
 
   type.addEventListener('change', function () {
-    window.synchronizeFields(type, price, TYPES, PRICES, setAttributeToElement);
+    window.synchronizeFields(type, price, TYPES, PRICES, setMinValue);
   });
 
   roomNumber.addEventListener('change', function () {
@@ -81,5 +81,5 @@
     noticeForm.reset();
   });
 
-  window.mainPin.syncWithElement(address, getCoordsValue);
+  window.mainPin.addDropListener(address, getCoordsValue);
 })();
