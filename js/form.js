@@ -1,6 +1,12 @@
 'use strict';
 
 (function () {
+  var TYPES = ['flat', 'hovel', 'palace'];
+  var PRICES = ['1000', '0', '10000'];
+  var ROOMS = ['room_1', 'rooms_2', 'rooms_100'];
+  var GUESTS = ['no_guests', 'guests_3', 'guests_3'];
+  var TIME = ['12', '13', '14'];
+
   var noticeForm = document.querySelector('.notice__form');
   var price = noticeForm.querySelector('#price');
   var type = noticeForm.querySelector('#type');
@@ -10,17 +16,6 @@
   var timeout = noticeForm.querySelector('#timeout');
   var address = noticeForm.querySelector('#address');
 
-  var priceForType = {'flat': '1000', 'hovel': '0', 'palace': '10000'};
-  var guestsForRooms = {'room_1': 'no_guests', 'rooms_2': 'guests_3', 'rooms_100': 'guests_3'};
-
-  /**
-   * @param  {Element} field - necessarily select
-   * @return {string}
-   */
-  var getSelectedValue = function (field) {
-    return field.options[field.selectedIndex].value;
-  };
-
   /**
    * @param  {event} evt
    */
@@ -29,6 +24,22 @@
       evt.target.classList.remove('invalid');
       evt.target.removeEventListener('keyup', setInputValid);
     }
+  };
+
+  /**
+   * @param  {Element} element
+   * @param  {string} value
+   */
+  var setMinValue = function (element, value) {
+    element.setAttribute('min', value);
+  };
+
+  /**
+   * @param  {Element} element
+   * @param  {string} value
+   */
+  var setValueToElement = function (element, value) {
+    element.value = value;
   };
 
   /**
@@ -53,18 +64,15 @@
   address.value = getCoordsValue();
 
   type.addEventListener('change', function () {
-    var typeValue = priceForType[getSelectedValue(type)];
-    price.setAttribute('min', typeValue);
+    window.synchronizeFields(type, price, TYPES, PRICES, setMinValue);
   });
 
   roomNumber.addEventListener('change', function () {
-    var guestsValue = guestsForRooms[getSelectedValue(roomNumber)];
-    capacity.value = guestsValue;
+    window.synchronizeFields(roomNumber, capacity, ROOMS, GUESTS, setValueToElement);
   });
 
   time.addEventListener('change', function () {
-    var timeValue = getSelectedValue(time);
-    timeout.value = timeValue;
+    window.synchronizeFields(time, timeout, TIME, TIME, setValueToElement);
   });
 
   noticeForm.addEventListener('invalid', onInvalidForm, true);
@@ -73,5 +81,5 @@
     noticeForm.reset();
   });
 
-  window.mainPin.syncWithElement(address, getCoordsValue);
+  window.mainPin.addDropListener(address, getCoordsValue);
 })();

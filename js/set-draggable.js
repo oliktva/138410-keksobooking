@@ -36,7 +36,7 @@ window.setDraggable = (function () {
   /**
    * @param  {Event} evt
    */
-  var onPinDrag = function (evt) {
+  var onDrag = function (evt) {
     evt.preventDefault();
     coordsState = {
       x: evt.clientX,
@@ -51,7 +51,7 @@ window.setDraggable = (function () {
    */
   var setDraggable = function (_element) {
     element = _element;
-    element.addEventListener('mousedown', onPinDrag);
+    element.addEventListener('mousedown', onDrag);
   };
 
   return setDraggable;

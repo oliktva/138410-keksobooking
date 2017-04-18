@@ -23,7 +23,7 @@ window.mainPin = (function () {
    * @param  {Element} element
    * @param  {Function} callback
    */
-  var syncWithElement = function (element, callback) {
+  var addDropListener = function (element, callback) {
     mainPin.addEventListener('mouseup', function (evt) {
       element.value = callback();
     });
@@ -38,7 +38,7 @@ window.mainPin = (function () {
 
   return {
     getCoords: getCoords,
-    syncWithElement: syncWithElement,
+    addDropListener: addDropListener,
     setDraggable: setDraggable
   };
 })();

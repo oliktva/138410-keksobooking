@@ -148,6 +148,7 @@ window.data = (function () {
 
   return {
     TYPES_MAP: TYPES_MAP,
+    PlaceData: PlaceData,
     createPlaces: createPlaces,
     getFormattedPrice: getFormattedPrice,
     createPlacesList: createPlaces,
