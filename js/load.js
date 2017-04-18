@@ -4,6 +4,9 @@ window.load = (function () {
   var xhr = new XMLHttpRequest();
   xhr.responseType = 'json';
 
+  /**
+   * @return {string}
+   */
   var getMessage = function () {
     switch (xhr.status) {
       case 403:
@@ -17,7 +20,10 @@ window.load = (function () {
     }
   };
 
-  var createErrorElement = function () {
+  /**
+   * create and render error window
+   */
+  var renderErrorElement = function () {
     var error = document.createElement('div');
     var message = document.createElement('div');
     var btnWrapper = document.createElement('div');
@@ -45,13 +51,17 @@ window.load = (function () {
     btn.addEventListener('click', setElementHidden);
   };
 
+  /**
+   * @param  {string} url
+   * @param  {Function} onLoad
+   */
   var load = function (url, onLoad) {
     xhr.open('GET', url);
     xhr.addEventListener('load', function () {
       if (xhr.status === 200) {
         onLoad(xhr.response);
       } else {
-        createErrorElement(xhr.status);
+        renderErrorElement(xhr.status);
       }
     });
     xhr.send();
