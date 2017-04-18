@@ -29,6 +29,5 @@
   };
 
   window.load(URL, addPinsToMap);
-  window.card.setCloseClickEvent();
   window.mainPin.setDraggable();
 })();
