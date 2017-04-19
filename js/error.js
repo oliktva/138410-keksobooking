@@ -14,7 +14,7 @@ window.showErrorWindow = (function () {
    * @param  {string} message
    */
   return function (message) {
-    var errorWindow = renderWindow(message);
+    var errorWindow = renderWindow();
 
     errorWindow.querySelector('.error__btn').textContent = 'Ну и ладно';
     errorWindow.querySelector('.error__message').textContent = message;
