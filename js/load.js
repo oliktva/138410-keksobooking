@@ -5,10 +5,11 @@ window.load = (function () {
   xhr.responseType = 'json';
 
   /**
+   * @param  {number} status
    * @return {string}
    */
-  var getMessage = function () {
-    switch (xhr.status) {
+  var getMessage = function (status) {
+    switch (status) {
       case 403:
         return 'Сервер нашел, что искал ты, но не покажет.';
       case 404:
@@ -21,51 +22,18 @@ window.load = (function () {
   };
 
   /**
-   * create and render error window
-   */
-  var renderErrorElement = function () {
-    var error = document.createElement('div');
-    var message = document.createElement('div');
-    var btnWrapper = document.createElement('div');
-    var btn = document.createElement('a');
-
-    btn.textContent = 'Ну и ладно';
-    btn.classList.add('error-btn');
-
-    btnWrapper.classList.add('error-btn-wrapper');
-    btnWrapper.appendChild(btn);
-    message.textContent = getMessage();
-
-    error.classList.add('error-window');
-    error.appendChild(message);
-    error.appendChild(btnWrapper);
-    document.body.appendChild(error);
-
-    var setElementHidden = function (evt) {
-      evt.preventDefault();
-      error.classList.add('hidden');
-
-      btn.removeEventListener('click', setElementHidden);
-    };
-
-    btn.addEventListener('click', setElementHidden);
-  };
-
-  /**
    * @param  {string} url
    * @param  {Function} onLoad
    */
-  var load = function (url, onLoad) {
+  return function (url, onLoad) {
     xhr.open('GET', url);
     xhr.addEventListener('load', function () {
       if (xhr.status === 200) {
         onLoad(xhr.response);
       } else {
-        renderErrorElement(xhr.status);
+        window.showErrorWindow(getMessage(xhr.status));
       }
     });
     xhr.send();
   };
-
-  return load;
 })();

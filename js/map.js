@@ -9,23 +9,14 @@
    */
   var addPinsToMap = function (places) {
     window.data.sortPlacesByLocationY(places);
-    window.pin.renderPins(places);
+    window.pin.renderPins(places, function (place, pinElement) {
+      window.pin.setActivePin(pinElement);
+      window.showCard(place, window.pin.unsetActivePin);
+    });
     window.showCard(places[0], window.pin.unsetActivePin);
 
-    var pins = window.pin.getPinsElements();
-    window.pin.setActivePin(pins[0]);
-    places.forEach(function (item, i) {
-      pins[i].addEventListener('click', function (evt) {
-        window.pin.setActivePin(evt.currentTarget);
-        window.showCard(item, window.pin.unsetActivePin);
-      });
-      pins[i].addEventListener('keydown', function (evt) {
-        if (window.checkKey.isEnter(evt)) {
-          window.pin.setActivePin(evt.currentTarget);
-          window.showCard(item, window.pin.unsetActivePin);
-        }
-      });
-    });
+    var pin = window.pin.getPinsElements()[0];
+    window.pin.setActivePin(pin);
   };
 
   window.load(URL, addPinsToMap);

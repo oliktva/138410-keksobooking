@@ -669,7 +669,7 @@ input.invalid, input.invalid:focus, textarea.invalid:focus {
   display: none;
 }
 
-.error-window {
+.error {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -684,12 +684,12 @@ input.invalid, input.invalid:focus, textarea.invalid:focus {
   z-index: 1000;
 }
 
-.error-btn-wrapper {
+.error__btn-wrapper {
   margin-top: 50px;
   text-align: center;
 }
 
-.error-btn {
+.error__btn {
   display: inline-block;
   padding: 8px 16px;
   text-align: center;
