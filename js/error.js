@@ -10,19 +10,23 @@ window.showErrorWindow = (function () {
     return error;
   };
 
+  var onCloseErrorClick = function () {
+    document.querySelector('.error__btn').removeEventListener('click', onCloseErrorClick);
+    document.body.removeChild(document.querySelector('.error'));
+  };
+
   /**
    * @param  {string} message
    */
   return function (message) {
     var errorWindow = renderWindow();
 
-    errorWindow.querySelector('.error__btn').textContent = 'Ну и ладно';
+    var btn = errorWindow.querySelector('.error__btn');
+    btn.textContent = 'Ну и ладно';
     errorWindow.querySelector('.error__message').textContent = message;
 
     document.body.appendChild(errorWindow);
 
-    errorWindow.querySelector('.error__btn').addEventListener('click', function () {
-      document.body.removeChild(errorWindow);
-    });
+    btn.querySelector('.error__btn').addEventListener('click', onCloseErrorClick);
   };
 })();
