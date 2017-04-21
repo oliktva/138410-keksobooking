@@ -1,0 +1,32 @@
+'use strict';
+
+window.showErrorWindow = (function () {
+  /**
+   * @return {Element}
+   */
+  var renderWindow = function () {
+    var errorTemplate = document.querySelector('#error-template').content.querySelector('.error');
+    var error = errorTemplate.cloneNode(true);
+    return error;
+  };
+
+  var onCloseErrorClick = function () {
+    document.querySelector('.error__btn').removeEventListener('click', onCloseErrorClick);
+    document.body.removeChild(document.querySelector('.error'));
+  };
+
+  /**
+   * @param  {string} message
+   */
+  return function (message) {
+    var errorWindow = renderWindow();
+
+    var btn = errorWindow.querySelector('.error__btn');
+    btn.textContent = 'Ну и ладно';
+    errorWindow.querySelector('.error__message').textContent = message;
+
+    document.body.appendChild(errorWindow);
+
+    btn.querySelector('.error__btn').addEventListener('click', onCloseErrorClick);
+  };
+})();

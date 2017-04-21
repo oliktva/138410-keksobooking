@@ -668,3 +668,33 @@ input.invalid, input.invalid:focus, textarea.invalid:focus {
 .hidden {
   display: none;
 }
+
+.error {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 320px;
+  min-height: 50px;
+  padding: 16px;
+  color: #000;
+  border: 3px solid #f42c04;
+  border-radius: 4px;
+  background: #f0f0ea;
+  z-index: 1000;
+}
+
+.error__btn-wrapper {
+  margin-top: 50px;
+  text-align: center;
+}
+
+.error__btn {
+  display: inline-block;
+  padding: 8px 16px;
+  text-align: center;
+  color: #fff;
+  background: #f42c04;
+  border-radius: 4px;
+  cursor: pointer;
+}

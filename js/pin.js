@@ -29,12 +29,22 @@ window.pin = (function () {
   /**
    * render pins on the page
    * @param  {Array<Place>} places
+   * @param {Function} callback
    */
-  var renderPins = function (places) {
+  var renderPins = function (places, callback) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < places.length; i++) {
-      fragment.appendChild(getPinElement(places[i].author, places[i].location));
-    }
+    places.forEach(function (item) {
+      var pin = getPinElement(item.author, item.location);
+      pin.addEventListener('click', function () {
+        callback(item, pin);
+      });
+      pin.addEventListener('keydown', function (evt) {
+        if (window.checkKey.isEnter(evt)) {
+          callback(item, pin);
+        }
+      });
+      fragment.appendChild(pin);
+    });
     pinMap.appendChild(fragment);
   };
 
