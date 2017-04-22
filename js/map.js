@@ -4,6 +4,8 @@
   /** @constant {string} */
   var URL = 'https://intensive-javascript-server-kjgvxfepjl.now.sh/keksobooking/data';
 
+  var map = document.querySelector('.tokyo img');
+
   /**
    * @param  {Array<Object>} places
    */
@@ -20,5 +22,5 @@
   };
 
   window.load(URL, addPinsToMap);
-  window.mainPin.setDraggable();
+  window.mainPin.setDraggable(map);
 })();
