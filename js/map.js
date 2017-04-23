@@ -9,16 +9,25 @@
   /**
    * @param  {Array<Object>} places
    */
-  var addPinsToMap = function (places) {
-    window.data.sortPlacesByLocationY(places);
+  var onDataChange = function (places) {
     window.pin.renderPins(places, function (place, pinElement) {
       window.pin.setActivePin(pinElement);
       window.showCard(place, window.pin.unsetActivePin);
     });
-    window.showCard(places[0], window.pin.unsetActivePin);
+    if (places.length > 0) {
+      window.showCard(places[0], window.pin.unsetActivePin);
 
-    var pin = window.pin.getPinsElements()[0];
-    window.pin.setActivePin(pin);
+      window.pin.setActivePin(window.pin.getPinsElements()[0]);
+    }
+  };
+
+  /**
+   * @param  {Array<Object>} places
+   */
+  var addPinsToMap = function (places) {
+    window.data.sortPlacesByLocationY(places);
+
+    window.filter(places, onDataChange);
   };
 
   window.load(URL, addPinsToMap);
