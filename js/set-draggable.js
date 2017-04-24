@@ -3,17 +3,19 @@
 window.setDraggable = (function () {
   var element = null;
   var boundElement = null;
+  var elementWidth = 0;
+  var elementHeight = 0;
 
   /**
    * @param  {Event} moveEvt
    */
   var onMouseMove = function (moveEvt) {
     moveEvt.preventDefault();
-    var x = moveEvt.pageX - boundElement.offsetLeft - element.clientWidth;
-    var y = moveEvt.pageY - boundElement.offsetTop - Math.floor(element.clientHeight / 2);
+    var x = moveEvt.pageX - boundElement.offsetLeft - elementWidth;
+    var y = moveEvt.pageY - boundElement.offsetTop - Math.floor(elementHeight / 2);
 
-    if (x >= element.clientWidth && x <= boundElement.clientWidth - element.clientWidth &&
-        y >= element.clientHeight && y <= boundElement.clientHeight - element.clientHeight) {
+    if (x >= elementWidth && x <= boundElement.clientWidth - elementWidth &&
+        y >= elementHeight && y <= boundElement.clientHeight - elementHeight) {
       element.style.left = x + 'px';
       element.style.top = y + 'px';
     }
@@ -45,6 +47,8 @@ window.setDraggable = (function () {
   var setDraggable = function (_element, _boundElement) {
     element = _element;
     boundElement = _boundElement;
+    elementWidth = element.clientWidth;
+    elementHeight = element.clientHeight;
     element.addEventListener('mousedown', onDrag);
   };
 

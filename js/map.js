@@ -12,13 +12,9 @@
   var onDataChange = function (places) {
     window.pin.renderPins(places, function (place, pinElement) {
       window.pin.setActivePin(pinElement);
-      window.showCard(place, window.pin.unsetActivePin);
+      window.showCard.open(place, window.pin.unsetActivePin);
     });
-    if (places.length > 0) {
-      window.showCard(places[0], window.pin.unsetActivePin);
-
-      window.pin.setActivePin(window.pin.getPinsElements()[0]);
-    }
+    window.showCard.close();
   };
 
   /**
@@ -28,6 +24,11 @@
     window.data.sortPlacesByLocationY(places);
 
     window.filter(places, onDataChange);
+    if (places.length > 0) {
+      window.showCard.open(places[0], window.pin.unsetActivePin);
+
+      window.pin.setActivePin(window.pin.getPinsElements()[0]);
+    }
   };
 
   window.load(URL, addPinsToMap);

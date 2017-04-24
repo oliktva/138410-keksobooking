@@ -4,7 +4,7 @@ window.showCard = (function () {
   var offerDialog = document.querySelector('#offer-dialog');
   var lodgeTemplate = document.querySelector('#lodge-template').content;
   var dialogClose = offerDialog.querySelector('.dialog__close');
-  var cb;
+  var callback = function () {};
 
   /**
    * generates element: window with certain element of places
@@ -39,10 +39,10 @@ window.showCard = (function () {
   /**
    * open dialog window
    * @param  {Place} place
-   * @param {Function} callback
+   * @param {Function} _callback
    */
-  var showCard = function (place, callback) {
-    cb = callback;
+  var showCard = function (place, _callback) {
+    callback = _callback;
     renderCard(place);
     if (window.visibility.isElementInvisible(offerDialog)) {
       window.visibility.setElementVisible(offerDialog, true);
@@ -58,7 +58,7 @@ window.showCard = (function () {
    */
   var closeCard = function () {
     window.visibility.setElementVisible(offerDialog, false);
-    cb();
+    callback();
 
     dialogClose.removeEventListener('keydown', onCardKeydown);
     document.removeEventListener('keydown', onDocumentEscKeydown);
@@ -90,5 +90,8 @@ window.showCard = (function () {
     closeCard();
   };
 
-  return showCard;
+  return {
+    open: showCard,
+    close: closeCard
+  };
 })();

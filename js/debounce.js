@@ -6,11 +6,13 @@
 
   /**
    * @param  {Function} callback
+   * @param {number} interval
    */
-  window.debounce = function (callback) {
+  window.debounce = function (callback, interval) {
     if (lastTimeout) {
       window.clearTimeout(lastTimeout);
     }
-    lastTimeout = window.setTimeout(callback, DEBOUNCE_INTERVAL);
+    var timeout = interval || DEBOUNCE_INTERVAL;
+    lastTimeout = window.setTimeout(callback, timeout);
   };
 })();
