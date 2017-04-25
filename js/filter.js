@@ -106,7 +106,7 @@ window.filter = (function () {
   };
 
   var onFilterChange = function () {
-    window.debounce(filterPlaces, 250);
+    window.debounce(filterPlaces, 500);
   };
 
   /**
@@ -117,7 +117,7 @@ window.filter = (function () {
     places = _places;
     filteredPlaces = _places;
     renderCallback = _callback;
-    [].map.call(form.querySelectorAll('.tokyo__filter'), function (item) {
+    [].forEach.call(form.querySelectorAll('.tokyo__filter'), function (item) {
       filterPlaces(item);
     });
     renderCallback(filteredPlaces);

@@ -1,14 +1,14 @@
 'use strict';
 
-(function () {
+window.debounce = (function () {
   var DEBOUNCE_INTERVAL = 300; // ms
-  var lastTimeout;
+  var lastTimeout = null;
 
   /**
    * @param  {Function} callback
    * @param {number} interval
    */
-  window.debounce = function (callback, interval) {
+  return function (callback, interval) {
     if (lastTimeout) {
       window.clearTimeout(lastTimeout);
     }
