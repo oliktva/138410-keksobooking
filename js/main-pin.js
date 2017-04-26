@@ -24,16 +24,16 @@ window.mainPin = (function () {
    * @param  {Function} callback
    */
   var addDropListener = function (element, callback) {
-    mainPin.addEventListener('mouseup', function (evt) {
+    mainPin.addEventListener('mousemove', function (evt) {
       element.value = callback();
     });
   };
 
   /**
-   * set main pin draggable
-   */
-  var setDraggable = function () {
-    window.setDraggable(mainPin);
+   * @param  {Element} map
+   * */
+  var setDraggable = function (map) {
+    window.setDraggable(mainPin, map);
   };
 
   return {

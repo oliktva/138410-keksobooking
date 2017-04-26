@@ -2,25 +2,23 @@
 
 window.setDraggable = (function () {
   var element = null;
-  var coordsState = null;
+  var boundElement = null;
+  var elementWidth = 0;
+  var elementHeight = 0;
 
   /**
    * @param  {Event} moveEvt
    */
   var onMouseMove = function (moveEvt) {
     moveEvt.preventDefault();
-    var shift = {
-      x: coordsState.x - moveEvt.clientX,
-      y: coordsState.y - moveEvt.clientY
-    };
+    var x = moveEvt.pageX - boundElement.offsetLeft - elementWidth;
+    var y = moveEvt.pageY - boundElement.offsetTop - Math.floor(elementHeight / 2);
 
-    coordsState = {
-      x: moveEvt.clientX,
-      y: moveEvt.clientY
-    };
-
-    element.style.top = (element.offsetTop - shift.y) + 'px';
-    element.style.left = (element.offsetLeft - shift.x) + 'px';
+    if (x >= elementWidth && x <= boundElement.clientWidth - elementWidth &&
+        y >= elementHeight && y <= boundElement.clientHeight - elementHeight) {
+      element.style.left = x + 'px';
+      element.style.top = y + 'px';
+    }
   };
 
   /**
@@ -38,19 +36,19 @@ window.setDraggable = (function () {
    */
   var onDrag = function (evt) {
     evt.preventDefault();
-    coordsState = {
-      x: evt.clientX,
-      y: evt.clientY
-    };
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   };
 
   /**
    * @param  {Element} _element
+   * @param {Element} _boundElement
    */
-  var setDraggable = function (_element) {
+  var setDraggable = function (_element, _boundElement) {
     element = _element;
+    boundElement = _boundElement;
+    elementWidth = element.clientWidth;
+    elementHeight = element.clientHeight;
     element.addEventListener('mousedown', onDrag);
   };
 

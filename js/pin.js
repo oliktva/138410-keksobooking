@@ -32,6 +32,10 @@ window.pin = (function () {
    * @param {Function} callback
    */
   var renderPins = function (places, callback) {
+    var pins = document.querySelectorAll('.pin:not(.pin__main)');
+    for (var i = 0; i < pins.length; i++) {
+      pins[i].remove();
+    }
     var fragment = document.createDocumentFragment();
     places.forEach(function (item) {
       var pin = getPinElement(item.author, item.location);
