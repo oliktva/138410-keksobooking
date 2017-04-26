@@ -27,6 +27,6 @@ window.showErrorWindow = (function () {
 
     document.body.appendChild(errorWindow);
 
-    btn.querySelector('.error__btn').addEventListener('click', onCloseErrorClick);
+    btn.addEventListener('click', onCloseErrorClick);
   };
 })();

@@ -403,6 +403,9 @@ input.invalid, input.invalid:focus, textarea.invalid:focus {
 }
 
 .form__photo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-right: 5px;
     margin-bottom: 5px;
     box-sizing: border-box;
@@ -416,6 +419,11 @@ input.invalid, input.invalid:focus, textarea.invalid:focus {
     border: 4px transparent;
 
     background: #dadad4;
+}
+
+.form__photo img {
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .form__submit {
