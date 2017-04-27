@@ -8,7 +8,7 @@ window.checkKey = (function () {
   };
 
   /**
-   * @param  {Event} evt
+   * @param {Event} evt
    * @return {boolean}
    */
   var isEnter = function (evt) {
@@ -16,7 +16,7 @@ window.checkKey = (function () {
   };
 
   /**
-   * @param  {Event} evt
+   * @param {Event} evt
    * @return {boolean}
    */
   var isEsc = function (evt) {

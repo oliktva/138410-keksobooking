@@ -20,8 +20,8 @@ window.mainPin = (function () {
   };
 
   /**
-   * @param  {Element} element
-   * @param  {Function} callback
+   * @param {Element} element
+   * @param {Function} callback
    */
   var addDropListener = function (element, callback) {
     mainPin.addEventListener('mousemove', function (evt) {
@@ -29,16 +29,9 @@ window.mainPin = (function () {
     });
   };
 
-  /**
-   * @param  {Element} map
-   * */
-  var setDraggable = function (map) {
-    window.setDraggable(mainPin, map);
-  };
-
   return {
+    element: mainPin,
     getCoords: getCoords,
-    addDropListener: addDropListener,
-    setDraggable: setDraggable
+    addDropListener: addDropListener
   };
 })();

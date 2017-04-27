@@ -8,15 +8,15 @@ window.showCard = (function () {
 
   /**
    * generates element: window with certain element of places
-   * @param  {Place} place
+   * @param {Place} place
    * @return {Element}
    */
   var getCardData = function (place) {
     var lodgeElement = lodgeTemplate.cloneNode(true);
     lodgeElement.querySelector('.lodge__title').textContent = place.offer.title;
     lodgeElement.querySelector('.lodge__address').textContent = place.offer.address;
-    lodgeElement.querySelector('.lodge__price').innerHTML = window.data.getFormattedPrice(place.offer.price) + ' &#x20bd;/ночь';
-    lodgeElement.querySelector('.lodge__type').textContent = window.data.TYPES_MAP[place.offer.type];
+    lodgeElement.querySelector('.lodge__price').innerHTML = window.dataUtils.getFormattedPrice(place.offer.price) + ' &#x20bd;/ночь';
+    lodgeElement.querySelector('.lodge__type').textContent = window.dataUtils.TYPES_MAP[place.offer.type];
     lodgeElement.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + place.offer.guests + ' гостей в ' + place.offer.rooms + ' комнатах';
     lodgeElement.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + place.offer.checkin + ', выезд до ' + place.offer.checkout;
     for (var i = 0; i < place.offer.features.length; i++) {
@@ -29,7 +29,7 @@ window.showCard = (function () {
 
   /**
    * renders window with element of places
-   * @param  {Place} place
+   * @param {Place} place
    */
   var renderCard = function (place) {
     offerDialog.replaceChild(getCardData(place), offerDialog.querySelector('.dialog__panel'));
@@ -38,11 +38,11 @@ window.showCard = (function () {
 
   /**
    * open dialog window
-   * @param  {Place} place
-   * @param {Function} _callback
+   * @param {Place} place
+   * @param {Function} closeCardCallback
    */
-  var showCard = function (place, _callback) {
-    callback = _callback;
+  var showCard = function (place, closeCardCallback) {
+    callback = closeCardCallback;
     renderCard(place);
     if (window.visibility.isElementInvisible(offerDialog)) {
       window.visibility.setElementVisible(offerDialog, true);
@@ -53,9 +53,6 @@ window.showCard = (function () {
     document.addEventListener('keydown', onDocumentEscKeydown);
   };
 
-  /**
-   * close dialog window
-   */
   var closeCard = function () {
     window.visibility.setElementVisible(offerDialog, false);
     callback();
@@ -65,7 +62,7 @@ window.showCard = (function () {
   };
 
   /**
-   * @param  {Event} evt
+   * @param {Event} evt
    */
   var onDocumentEscKeydown = function (evt) {
     if (window.checkKey.isEsc(evt)) {
@@ -74,7 +71,7 @@ window.showCard = (function () {
   };
 
   /**
-   * @param  {Event} evt
+   * @param {Event} evt
    */
   var onCardKeydown = function (evt) {
     if (window.checkKey.isEnter(evt)) {
@@ -83,7 +80,7 @@ window.showCard = (function () {
   };
 
   /**
-   * @param  {Event} evt
+   * @param {Event} evt
    */
   var onCardCloseClick = function (evt) {
     evt.preventDefault();
