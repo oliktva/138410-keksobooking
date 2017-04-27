@@ -11,8 +11,8 @@ window.setDraggable = (function () {
    */
   var onMouseMove = function (moveEvt) {
     moveEvt.preventDefault();
-    var x = moveEvt.pageX - boundElement.offsetLeft;
-    var y = moveEvt.pageY - boundElement.offsetTop;
+    var x = moveEvt.pageX - boundElement.getBoundingClientRect().left - elementWidth;
+    var y = moveEvt.pageY - boundElement.getBoundingClientRect().top - Math.floor(elementHeight / 2);
 
     if (x >= elementWidth && x <= boundElement.clientWidth - elementWidth &&
         y >= elementHeight && y <= boundElement.clientHeight - elementHeight) {
