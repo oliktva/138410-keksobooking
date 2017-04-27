@@ -11,8 +11,8 @@ window.pin = (function () {
 
   /**
    * creates DOM element for pin
-   * @param  {Author} author
-   * @param  {Location} location
+   * @param {Author} author
+   * @param {Location} location
    * @return {Element}
    */
   var getPinElement = function (author, location) {
@@ -28,7 +28,7 @@ window.pin = (function () {
 
   /**
    * render pins on the page
-   * @param  {Array<Place>} places
+   * @param {Array<Place>} places
    * @param {Function} callback
    */
   var renderPins = function (places, callback) {
@@ -39,16 +39,20 @@ window.pin = (function () {
     var fragment = document.createDocumentFragment();
     places.forEach(function (item) {
       var pin = getPinElement(item.author, item.location);
+
       pin.addEventListener('click', function () {
         callback(item, pin);
       });
+
       pin.addEventListener('keydown', function (evt) {
         if (window.checkKey.isEnter(evt)) {
           callback(item, pin);
         }
       });
+
       fragment.appendChild(pin);
     });
+
     pinMap.appendChild(fragment);
   };
 
@@ -64,7 +68,7 @@ window.pin = (function () {
 
   /**
    * add pin--active class
-   * @param  {Element} element
+   * @param {Element} element
    */
   var setActivePin = function (element) {
     unsetActivePin();

@@ -6,8 +6,7 @@ window.showErrorWindow = (function () {
    */
   var renderWindow = function () {
     var errorTemplate = document.querySelector('#error-template').content.querySelector('.error');
-    var error = errorTemplate.cloneNode(true);
-    return error;
+    return errorTemplate.cloneNode(true);
   };
 
   var onCloseErrorClick = function () {
@@ -16,7 +15,7 @@ window.showErrorWindow = (function () {
   };
 
   /**
-   * @param  {string} message
+   * @param {string} message
    */
   return function (message) {
     var errorWindow = renderWindow();

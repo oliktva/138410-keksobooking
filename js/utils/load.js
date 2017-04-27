@@ -2,7 +2,7 @@
 
 window.load = (function () {
   /**
-   * @param  {number} status
+   * @param {number} status
    * @return {string}
    */
   var getMessage = function (status) {
@@ -19,8 +19,8 @@ window.load = (function () {
   };
 
   /**
-   * @param  {string} url
-   * @param  {Function} onLoad
+   * @param {string} url
+   * @param {Function} onLoad
    */
   return function (url, onLoad) {
     var xhr = new XMLHttpRequest();

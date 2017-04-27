@@ -7,30 +7,36 @@
   var map = document.querySelector('.tokyo img');
 
   /**
-   * @param  {Array<Object>} places
+   * @param {Element} element
+   * @param {Object} data
+   */
+  var showPinsAndCard = function (element, data) {
+    window.pin.setActivePin(element);
+    window.showCard.open(data, window.pin.unsetActivePin);
+  };
+
+  /**
+   * @param {Array<Object>} places
    */
   var onDataChange = function (places) {
     window.pin.renderPins(places, function (place, pinElement) {
-      window.pin.setActivePin(pinElement);
-      window.showCard.open(place, window.pin.unsetActivePin);
+      showPinsAndCard(pinElement, place);
     });
     window.showCard.close();
   };
 
   /**
-   * @param  {Array<Object>} places
+   * @param {Array<Object>} places
    */
   var addPinsToMap = function (places) {
-    window.data.sortPlacesByLocationY(places);
+    window.dataUtils.sortPlacesByLocationY(places);
 
     window.filter(places, onDataChange);
     if (places.length > 0) {
-      window.showCard.open(places[0], window.pin.unsetActivePin);
-
-      window.pin.setActivePin(window.pin.getPinsElements()[0]);
+      showPinsAndCard(window.pin.getPinsElements()[0], places[0]);
     }
   };
 
   window.load(URL, addPinsToMap);
-  window.mainPin.setDraggable(map);
+  window.setDraggable(window.mainPin.element, map);
 })();

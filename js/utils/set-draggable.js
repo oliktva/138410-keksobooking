@@ -7,7 +7,7 @@ window.setDraggable = (function () {
   var elementHeight = 0;
 
   /**
-   * @param  {Event} moveEvt
+   * @param {Event} moveEvt
    */
   var onMouseMove = function (moveEvt) {
     moveEvt.preventDefault();
@@ -22,7 +22,7 @@ window.setDraggable = (function () {
   };
 
   /**
-   * @param  {Event} upEvt
+   * @param {Event} upEvt
    */
   var onMouseUp = function (upEvt) {
     upEvt.preventDefault();
@@ -32,7 +32,7 @@ window.setDraggable = (function () {
   };
 
   /**
-   * @param  {Event} evt
+   * @param {Event} evt
    */
   var onDrag = function (evt) {
     evt.preventDefault();
@@ -41,12 +41,12 @@ window.setDraggable = (function () {
   };
 
   /**
-   * @param  {Element} _element
-   * @param {Element} _boundElement
+   * @param {Element} draggableElement
+   * @param {Element} borderElement
    */
-  var setDraggable = function (_element, _boundElement) {
-    element = _element;
-    boundElement = _boundElement;
+  var setDraggable = function (draggableElement, borderElement) {
+    element = draggableElement;
+    boundElement = borderElement;
     elementWidth = element.clientWidth;
     elementHeight = element.clientHeight;
     element.addEventListener('mousedown', onDrag);

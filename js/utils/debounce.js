@@ -5,7 +5,7 @@ window.debounce = (function () {
   var lastTimeout = null;
 
   /**
-   * @param  {Function} callback
+   * @param {Function} callback
    * @param {number} interval
    */
   return function (callback, interval) {

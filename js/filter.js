@@ -12,7 +12,7 @@ window.filter = (function () {
   var featuresList = form.querySelectorAll('input[name="feature"]');
 
   /**
-   * @param  {Element} element
+   * @param {Element} element
    * @return {string}
    */
   var getValueFromFilter = function (element) {
@@ -33,9 +33,9 @@ window.filter = (function () {
   };
 
   /**
-   * @param  {Object} item
-   * @param  {string} field
-   * @param  {string} value
+   * @param {Object} item
+   * @param {string} field
+   * @param {string} value
    * @return {boolean}
    */
   var isEqual = function (item, field, value) {
@@ -47,9 +47,9 @@ window.filter = (function () {
   };
 
   /**
-   * @param  {Object} item
-   * @param  {string} field
-   * @param  {string} value
+   * @param {Object} item
+   * @param {string} field
+   * @param {string} value
    * @return {boolean}
    */
   var isContain = function (item, field, value) {
@@ -57,9 +57,9 @@ window.filter = (function () {
   };
 
   /**
-   * @param  {Object} item
-   * @param  {string} field
-   * @param  {string} value
+   * @param {Object} item
+   * @param {string} field
+   * @param {string} value
    * @return {boolean}
    */
   var isSuitablePrice = function (item, field, value) {
@@ -76,9 +76,9 @@ window.filter = (function () {
   };
 
   /**
-   * @param  {Object} item
-   * @param  {string} field
-   * @param  {string} value
+   * @param {Object} item
+   * @param {string} field
+   * @param {string} value
    * @return {boolean}
    */
   var isSuitableValue = function (item, field, value) {
@@ -110,13 +110,13 @@ window.filter = (function () {
   };
 
   /**
-   * @param  {Array<Object>} _places
-   * @param  {Function} _callback
+   * @param {Array<Object>} data
+   * @param {Function} renderData
    */
-  return function (_places, _callback) {
-    places = _places;
-    filteredPlaces = _places;
-    renderCallback = _callback;
+  return function (data, renderData) {
+    places = data;
+    filteredPlaces = data;
+    renderCallback = renderData;
     [].forEach.call(form.querySelectorAll('.tokyo__filter'), function (item) {
       filterPlaces(item);
     });
