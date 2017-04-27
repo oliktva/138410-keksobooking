@@ -117,10 +117,6 @@ window.filter = (function () {
     places = data;
     filteredPlaces = data;
     renderCallback = renderData;
-    [].forEach.call(form.querySelectorAll('.tokyo__filter'), function (item) {
-      filterPlaces(item);
-    });
-    renderCallback(filteredPlaces);
     form.addEventListener('change', onFilterChange);
   };
 })();
