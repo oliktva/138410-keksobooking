@@ -4,6 +4,9 @@
   /** @constant {string} */
   var URL = 'https://intensive-javascript-server-kjgvxfepjl.now.sh/keksobooking/data';
 
+  /** @constant {number} */
+  var MAX_NUMBER = 3;
+
   /**
    * @param {Element} element
    * @param {Object} data
@@ -22,16 +25,18 @@
     });
     window.showCard.close();
   };
-
   /**
    * @param {Array<Object>} places
    */
   var addPinsToMap = function (places) {
     window.dataUtils.sortPlacesByLocationY(places);
-
     window.filter(places, onDataChange);
     if (places.length > 0) {
-      showPinsAndCard(window.pin.getPinsElements()[0], places[0]);
+      var randomPlaces = window.dataUtils.shuffleArray(places).slice(0, MAX_NUMBER);
+      window.pin.renderPins(randomPlaces, function (place, pinElement) {
+        showPinsAndCard(pinElement, place);
+      });
+      showPinsAndCard(window.pin.getPinsElements()[0], randomPlaces[0]);
     }
   };
 
