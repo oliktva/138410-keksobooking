@@ -20,7 +20,7 @@ window.filter = (function () {
   };
 
   /**
-   * @param {array} array
+   * @param {Array} array
    * @param {string} field
    * @param {string} value
    * @param {Function} filterFunction

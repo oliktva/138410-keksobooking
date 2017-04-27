@@ -104,7 +104,7 @@
   window.mainPin.addDropListener(address, getCoordsValue);
 
 /**
-   * @param {Element} elements
+   * @param {Array<Element>} elements
    * @param {FileReader} reader
    */
   var loadImage = function (elements, reader) {
@@ -114,7 +114,7 @@
   };
 
   /**
-   * @param {Element} elements
+   * @param {Array<Element>} elements
    * @param {FileReader} reader
    * @param {number} index
    */
