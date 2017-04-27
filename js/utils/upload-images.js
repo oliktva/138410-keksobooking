@@ -22,12 +22,11 @@ window.uploadImages = (function () {
   return function (inputFileElement, previewElements, max, callback) {
     var currentPreviewIndex = 0;
     inputFileElement.addEventListener('change', function () {
-      var maxNumber = Math.min(max, inputFileElement.files.length);
       if (max < inputFileElement.files.length) {
         window.showErrorWindow('Количество выбранных фотографий превосходит максимальное допустимое значение. Будет загружено ' + max + ' фотографий.');
       }
 
-      for (var i = 0; i < maxNumber; i++) {
+      for (var i = 0; i < Math.min(max, inputFileElement.files.length); i++) {
         var file = inputFileElement.files[i];
         var fileName = file.name.toLowerCase();
 

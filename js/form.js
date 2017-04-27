@@ -17,9 +17,6 @@
   var TIME = ['12', '13', '14'];
 
   /** @constant {number} */
-  var ONE = 1;
-
-  /** @constant {number} */
   var MAX_NUMBER = 16;
 
   var noticeForm = document.querySelector('.notice__form');
@@ -31,13 +28,15 @@
   var timeout = noticeForm.querySelector('#timeout');
   var address = noticeForm.querySelector('#address');
 
+  var map = document.querySelector('.tokyo img');
+
   var avatarFileChooser = document.querySelector('.notice__photo .upload input[type=file]');
   var avatarPreviewList = document.querySelectorAll('.notice__preview-image');
   var photoFileChooser = document.querySelector('.form__photo-container .upload input[type=file]');
   var photoPreviewList = document.querySelectorAll('.form__photo');
 
   /**
-   * @param {event} evt
+   * @param {Event} evt
    */
   var setInputValid = function (evt) {
     if (evt.target.value.length > 0) {
@@ -63,7 +62,7 @@
   };
 
   /**
-   * @param {event} evt
+   * @param {Event} evt
    */
   var onInvalidForm = function (evt) {
     var invalidElements = noticeForm.querySelectorAll(':invalid');
@@ -101,6 +100,7 @@
     noticeForm.reset();
   });
 
+  window.setDraggable(window.mainPin.element, map);
   window.mainPin.addDropListener(address, getCoordsValue);
 
 /**
@@ -124,6 +124,6 @@
     });
   };
 
-  window.uploadImages(avatarFileChooser, avatarPreviewList, ONE, loadImage);
+  window.uploadImages(avatarFileChooser, avatarPreviewList, 1, loadImage);
   window.uploadImages(photoFileChooser, photoPreviewList, MAX_NUMBER, loadNextImage);
 })();
