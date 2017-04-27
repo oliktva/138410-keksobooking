@@ -65,8 +65,6 @@ window.dataUtils = (function () {
 
   return {
     TYPES_MAP: TYPES_MAP,
-    getRandom: getRandom,
-    exchangeArrayElements: exchangeArrayElements,
     shuffleArray: shuffleArray,
     getFormattedPrice: getFormattedPrice,
     sortPlacesByLocationY: sortPlacesByLocationY
