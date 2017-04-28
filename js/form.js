@@ -51,6 +51,7 @@
    */
   var setMinValue = function (element, value) {
     element.setAttribute('min', value);
+    element.setAttribute('placeholder', value);
   };
 
   /**
@@ -90,8 +91,16 @@
     window.synchronizeFields(roomNumber, capacity, ROOMS, GUESTS, setValueToElement);
   });
 
+  capacity.addEventListener('change', function () {
+    window.synchronizeFields(capacity, roomNumber, GUESTS, ROOMS, setValueToElement);
+  });
+
   time.addEventListener('change', function () {
     window.synchronizeFields(time, timeout, TIME, TIME, setValueToElement);
+  });
+
+  timeout.addEventListener('change', function () {
+    window.synchronizeFields(timeout, time, TIME, TIME, setValueToElement);
   });
 
   noticeForm.addEventListener('invalid', onInvalidForm, true);
