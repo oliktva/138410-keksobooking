@@ -1,6 +1,6 @@
 'use strict';
 
-window.checkKey = (function () {
+module.exports = (function () {
   /** @enum {number} */
   var KeyCode = {
     ESC_KEY_CODE: 27,

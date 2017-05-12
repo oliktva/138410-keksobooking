@@ -1,91 +1,65 @@
 'use strict';
 
-window.pin = (function () {
+var checkKey = require('./utils/check-key.js');
+
+(function () {
   /** @enum {number} */
   var PlaceDimension = {
     PIN_WIDTH: 56,
     PIN_HEIGHT: 72
   };
 
-  var pinMap = document.querySelector('.tokyo__pin-map');
-
   /**
-   * creates DOM element for pin
-   * @param {Author} author
-   * @param {Location} location
-   * @return {Element}
+   * @param  {Array<Object>} data
+   * @param  {Function} callback
    */
-  var getPinElement = function (author, location) {
-    var img = '<img src="' + author.avatar + '" class="rounded" width="40" height="40">';
-    var pinElement = document.createElement('div');
-    pinElement.classList.add('pin');
-    pinElement.setAttribute('tabindex', '0');
-    pinElement.style.left = (location.x - Math.floor(PlaceDimension.PIN_WIDTH / 2)) + 'px';
-    pinElement.style.top = (location.y - PlaceDimension.PIN_HEIGHT) + 'px';
-    pinElement.insertAdjacentHTML('afterBegin', img);
-    return pinElement;
+  var Pin = function (data, callback) {
+    var pin = this;
+    this.element = (function () {
+      var element = document.createElement('div');
+      var img = '<img src="' + data.author.avatar + '" class="rounded" width="40" height="40">';
+      element.classList.add('pin');
+      element.setAttribute('tabindex', '0');
+      element.style.left = (data.location.x - Math.floor(PlaceDimension.PIN_WIDTH / 2)) + 'px';
+      element.style.top = (data.location.y - PlaceDimension.PIN_HEIGHT) + 'px';
+      element.insertAdjacentHTML('afterBegin', img);
+      return element;
+    })();
+    this.data = data;
+    this.active = false;
+    this.onClick = function () {
+      callback(pin);
+    };
+    this.onKeydown = function (evt) {
+      if (checkKey.isEnter(evt)) {
+        callback(pin);
+      }
+    };
+
+    this.element.addEventListener('click', this.onClick);
+    this.element.addEventListener('keydown', this.onKeydown);
   };
 
-  /**
-   * render pins on the page
-   * @param {Array<Place>} places
-   * @param {Function} callback
-   */
-  var renderPins = function (places, callback) {
-    var pins = document.querySelectorAll('.pin:not(.pin__main)');
-    for (var i = 0; i < pins.length; i++) {
-      pins[i].remove();
-    }
-    var fragment = document.createDocumentFragment();
-    places.forEach(function (item) {
-      var pin = getPinElement(item.author, item.location);
-
-      pin.addEventListener('click', function () {
-        callback(item, pin);
-      });
-
-      pin.addEventListener('keydown', function (evt) {
-        if (window.checkKey.isEnter(evt)) {
-          callback(item, pin);
-        }
-      });
-
-      fragment.appendChild(pin);
-    });
-
-    pinMap.appendChild(fragment);
+  Pin.prototype.remove = function () {
+    this.element.removeEventListener('click', this.onClick);
+    this.element.removeEventListener('keydown', this.onKeydown);
   };
 
   /**
    * delete pin--active class if is exist
    */
-  var unsetActivePin = function () {
-    var active = pinMap.querySelector('.pin--active');
-    if (active !== null) {
-      active.classList.remove('pin--active');
-    }
+  Pin.prototype.unsetActivePin = function () {
+    this.element.classList.remove('pin--active');
+    this.active = false;
   };
 
   /**
    * add pin--active class
-   * @param {Element} element
    */
-  var setActivePin = function (element) {
-    unsetActivePin();
-    element.classList.add('pin--active');
+  Pin.prototype.setActivePin = function () {
+    this.element.classList.add('pin--active');
+    this.active = true;
   };
 
-  /**
-   * @return {Array<Element>}
-   */
-  var getPinsElements = function () {
-    return pinMap.querySelectorAll('.pin:not(.pin__main)');
-  };
-
-  return {
-    renderPins: renderPins,
-    unsetActivePin: unsetActivePin,
-    setActivePin: setActivePin,
-    getPinsElements: getPinsElements
-  };
+  module.exports = Pin;
 })();

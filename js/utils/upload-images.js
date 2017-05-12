@@ -1,6 +1,6 @@
 'use strict';
 
-window.uploadImages = (function () {
+module.exports = (function () {
   var FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
   /**

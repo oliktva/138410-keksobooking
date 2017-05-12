@@ -1,6 +1,6 @@
 'use strict';
 
-window.showErrorWindow = (function () {
+module.exports = (function () {
   /**
    * @return {Element}
    */

@@ -1,6 +1,6 @@
 'use strict';
 
-window.setDraggable = (function () {
+module.exports = (function () {
   var element = null;
   var boundElement = null;
   var elementWidth = 0;

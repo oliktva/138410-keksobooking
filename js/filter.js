@@ -1,6 +1,8 @@
 'use strict';
 
-window.filter = (function () {
+var debounce = require('./utils/debounce.js');
+
+module.exports = (function () {
   var places = [];
   var filteredPlaces = [];
   var renderCallback = null;
@@ -106,7 +108,7 @@ window.filter = (function () {
   };
 
   var onFilterChange = function () {
-    window.debounce(filterPlaces, 500);
+    debounce(filterPlaces, 500);
   };
 
   /**

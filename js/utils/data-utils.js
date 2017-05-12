@@ -1,6 +1,6 @@
 'use strict';
 
-window.dataUtils = (function () {
+module.exports = (function () {
   /** @constant {Object} */
   var TYPES_MAP = {'flat': 'Квартира', 'house': 'Дом', 'bungalo': 'Бунгало'};
 

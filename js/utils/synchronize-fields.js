@@ -1,6 +1,6 @@
 'use strict';
 
-window.synchronizeFields = (function () {
+module.exports = (function () {
   /**
    * @param {Element} field
    * @param {Array} array

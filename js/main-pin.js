@@ -1,6 +1,6 @@
 'use strict';
 
-window.mainPin = (function () {
+module.exports = (function () {
   /** @enum {number} */
   var PlaceDimension = {
     WIDTH: 75,

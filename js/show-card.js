@@ -1,6 +1,10 @@
 'use strict';
 
-window.showCard = (function () {
+var dataUtils = require('./utils/data-utils.js');
+var visibility = require('./utils/visibility.js');
+var checkKey = require('./utils/check-key.js');
+
+module.exports = (function () {
   var offerDialog = document.querySelector('#offer-dialog');
   var lodgeTemplate = document.querySelector('#lodge-template').content;
   var dialogClose = offerDialog.querySelector('.dialog__close');
@@ -15,8 +19,8 @@ window.showCard = (function () {
     var lodgeElement = lodgeTemplate.cloneNode(true);
     lodgeElement.querySelector('.lodge__title').textContent = place.offer.title;
     lodgeElement.querySelector('.lodge__address').textContent = place.offer.address;
-    lodgeElement.querySelector('.lodge__price').innerHTML = window.dataUtils.getFormattedPrice(place.offer.price) + ' &#x20bd;/ночь';
-    lodgeElement.querySelector('.lodge__type').textContent = window.dataUtils.TYPES_MAP[place.offer.type];
+    lodgeElement.querySelector('.lodge__price').innerHTML = dataUtils.getFormattedPrice(place.offer.price) + ' &#x20bd;/ночь';
+    lodgeElement.querySelector('.lodge__type').textContent = dataUtils.TYPES_MAP[place.offer.type];
     lodgeElement.querySelector('.lodge__rooms-and-guests').textContent = 'Для ' + place.offer.guests + ' гостей в ' + place.offer.rooms + ' комнатах';
     lodgeElement.querySelector('.lodge__checkin-time').textContent = 'Заезд после ' + place.offer.checkin + ', выезд до ' + place.offer.checkout;
     for (var i = 0; i < place.offer.features.length; i++) {
@@ -44,8 +48,8 @@ window.showCard = (function () {
   var showCard = function (place, closeCardCallback) {
     callback = closeCardCallback;
     renderCard(place);
-    if (window.visibility.isElementInvisible(offerDialog)) {
-      window.visibility.setElementVisible(offerDialog, true);
+    if (visibility.isElementInvisible(offerDialog)) {
+      visibility.setElementVisible(offerDialog, true);
     }
 
     dialogClose.addEventListener('click', onCardCloseClick);
@@ -54,7 +58,7 @@ window.showCard = (function () {
   };
 
   var closeCard = function () {
-    window.visibility.setElementVisible(offerDialog, false);
+    visibility.setElementVisible(offerDialog, false);
     callback();
 
     dialogClose.removeEventListener('keydown', onCardKeydown);
@@ -65,7 +69,7 @@ window.showCard = (function () {
    * @param {Event} evt
    */
   var onDocumentEscKeydown = function (evt) {
-    if (window.checkKey.isEsc(evt)) {
+    if (checkKey.isEsc(evt)) {
       closeCard();
     }
   };
@@ -74,7 +78,7 @@ window.showCard = (function () {
    * @param {Event} evt
    */
   var onCardKeydown = function (evt) {
-    if (window.checkKey.isEnter(evt)) {
+    if (checkKey.isEnter(evt)) {
       closeCard();
     }
   };

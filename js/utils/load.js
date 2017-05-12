@@ -1,6 +1,6 @@
 'use strict';
 
-window.load = (function () {
+module.exports = (function () {
   /**
    * @param {number} status
    * @return {string}

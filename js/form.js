@@ -1,5 +1,10 @@
 'use strict';
 
+var mainPin = require('./main-pin.js');
+var synchronizeFields = require('./utils/synchronize-fields.js');
+var setDraggable = require('./utils/set-draggable.js');
+var uploadImages = require('./utils/upload-images.js');
+
 (function () {
   /** @constant {Array} */
   var TYPES = ['flat', 'hovel', 'palace'];
@@ -77,30 +82,30 @@
    * @return {string}
    */
   var getCoordsValue = function () {
-    return 'x: ' + window.mainPin.getCoords().x + ' y: ' + window.mainPin.getCoords().y;
+    return 'x: ' + mainPin.getCoords().x + ' y: ' + mainPin.getCoords().y;
   };
 
   address.setAttribute('readonly', 'readonly');
   address.value = getCoordsValue();
 
   type.addEventListener('change', function () {
-    window.synchronizeFields(type, price, TYPES, PRICES, setMinValue);
+    synchronizeFields(type, price, TYPES, PRICES, setMinValue);
   });
 
   roomNumber.addEventListener('change', function () {
-    window.synchronizeFields(roomNumber, capacity, ROOMS, GUESTS, setValueToElement);
+    synchronizeFields(roomNumber, capacity, ROOMS, GUESTS, setValueToElement);
   });
 
   capacity.addEventListener('change', function () {
-    window.synchronizeFields(capacity, roomNumber, GUESTS, ROOMS, setValueToElement);
+    synchronizeFields(capacity, roomNumber, GUESTS, ROOMS, setValueToElement);
   });
 
   time.addEventListener('change', function () {
-    window.synchronizeFields(time, timeout, TIME, TIME, setValueToElement);
+    synchronizeFields(time, timeout, TIME, TIME, setValueToElement);
   });
 
   timeout.addEventListener('change', function () {
-    window.synchronizeFields(timeout, time, TIME, TIME, setValueToElement);
+    synchronizeFields(timeout, time, TIME, TIME, setValueToElement);
   });
 
   noticeForm.addEventListener('invalid', onInvalidForm, true);
@@ -109,8 +114,8 @@
     noticeForm.reset();
   });
 
-  window.setDraggable(window.mainPin.element, map);
-  window.mainPin.addDropListener(address, getCoordsValue);
+  setDraggable(mainPin.element, map);
+  mainPin.addDropListener(address, getCoordsValue);
 
 /**
    * @param {Array<Element>} elements
@@ -133,6 +138,6 @@
     });
   };
 
-  window.uploadImages(avatarFileChooser, avatarPreviewList, 1, loadImage);
-  window.uploadImages(photoFileChooser, photoPreviewList, MAX_NUMBER, loadNextImage);
+  uploadImages(avatarFileChooser, avatarPreviewList, 1, loadImage);
+  uploadImages(photoFileChooser, photoPreviewList, MAX_NUMBER, loadNextImage);
 })();

@@ -1,6 +1,6 @@
 'use strict';
 
-window.visibility = (function () {
+module.exports = (function () {
   /** @constant {string} */
   var HIDDEN_CLASS = 'hidden';
 
