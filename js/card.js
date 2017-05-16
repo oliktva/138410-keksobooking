@@ -4,18 +4,17 @@ var dataUtils = require('./utils/data-utils.js');
 var visibility = require('./utils/visibility.js');
 var checkKey = require('./utils/check-key.js');
 
-module.exports = (function () {
-  var offerDialog = document.querySelector('#offer-dialog');
+(function () {
   var lodgeTemplate = document.querySelector('#lodge-template').content;
+  var offerDialog = document.querySelector('#offer-dialog');
   var dialogClose = offerDialog.querySelector('.dialog__close');
-  var callback = function () {};
 
   /**
    * generates element: window with certain element of places
    * @param {Place} place
    * @return {Element}
    */
-  var getCardData = function (place) {
+  var getElement = function (place) {
     var lodgeElement = lodgeTemplate.cloneNode(true);
     lodgeElement.querySelector('.lodge__title').textContent = place.offer.title;
     lodgeElement.querySelector('.lodge__address').textContent = place.offer.address;
@@ -30,69 +29,63 @@ module.exports = (function () {
     lodgeElement.querySelector('.lodge__description').textContent = place.offer.description;
     return lodgeElement;
   };
-
   /**
-   * renders window with element of places
+   * generates element: window with certain element of places
    * @param {Place} place
+   * @return {string}
    */
-  var renderCard = function (place) {
-    offerDialog.replaceChild(getCardData(place), offerDialog.querySelector('.dialog__panel'));
-    offerDialog.querySelector('.dialog__title').querySelector('img').setAttribute('src', place.author.avatar);
+  var getAvatar = function (place) {
+    return place.author.avatar;
+  };
+
+  var Card = function (pin) {
+    var card = this;
+    this.pin = pin;
+    this.element = getElement(pin.data);
+    this.onCardCloseClick = function (evt) {
+      evt.preventDefault();
+      card.close();
+      card.pin.unsetActive();
+    };
+    this.onDocumentEscKeydown = function (evt) {
+      if (checkKey.isEsc(evt)) {
+        card.close();
+        card.pin.unsetActive();
+      }
+    };
+    this.onCardKeydown = function (evt) {
+      if (checkKey.isEnter(evt)) {
+        card.close();
+        card.pin.unsetActive();
+      }
+    };
+  };
+
+  var render = function (card) {
+    offerDialog.replaceChild(card.element.cloneNode(true), offerDialog.querySelector('.dialog__panel'));
+    offerDialog.querySelector('.dialog__title').querySelector('img').setAttribute('src', getAvatar(card.pin.data));
   };
 
   /**
    * open dialog window
    * @param {Place} place
-   * @param {Function} closeCardCallback
    */
-  var showCard = function (place, closeCardCallback) {
-    callback = closeCardCallback;
-    renderCard(place);
+  Card.prototype.show = function () {
+    render(this);
     if (visibility.isElementInvisible(offerDialog)) {
       visibility.setElementVisible(offerDialog, true);
     }
 
-    dialogClose.addEventListener('click', onCardCloseClick);
-    dialogClose.addEventListener('keydown', onCardKeydown);
-    document.addEventListener('keydown', onDocumentEscKeydown);
+    dialogClose.addEventListener('click', this.onCardCloseClick);
+    dialogClose.addEventListener('keydown', this.onCardKeydown);
+    document.addEventListener('keydown', this.onDocumentEscKeydown);
   };
 
-  var closeCard = function () {
+  Card.prototype.close = function () {
     visibility.setElementVisible(offerDialog, false);
-    callback();
 
-    dialogClose.removeEventListener('keydown', onCardKeydown);
-    document.removeEventListener('keydown', onDocumentEscKeydown);
+    dialogClose.removeEventListener('keydown', this.onCardKeydown);
+    document.removeEventListener('keydown', this.onDocumentEscKeydown);
   };
-
-  /**
-   * @param {Event} evt
-   */
-  var onDocumentEscKeydown = function (evt) {
-    if (checkKey.isEsc(evt)) {
-      closeCard();
-    }
-  };
-
-  /**
-   * @param {Event} evt
-   */
-  var onCardKeydown = function (evt) {
-    if (checkKey.isEnter(evt)) {
-      closeCard();
-    }
-  };
-
-  /**
-   * @param {Event} evt
-   */
-  var onCardCloseClick = function (evt) {
-    evt.preventDefault();
-    closeCard();
-  };
-
-  return {
-    open: showCard,
-    close: closeCard
-  };
+  module.exports = Card;
 })();

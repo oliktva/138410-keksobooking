@@ -1,10 +1,12 @@
 'use strict';
 
 var PinClass = require('./pin.js');
-var showCard = require('./show-card.js');
+var CardClass = require('./card.js');
 var dataUtils = require('./utils/data-utils.js');
 var filter = require('./filter.js');
 var load = require('./utils/load.js');
+
+var debounce = require('./utils/debounce.js');
 
 (function () {
   /** @constant {string} */
@@ -14,7 +16,23 @@ var load = require('./utils/load.js');
   var MAX_NUMBER = 3;
 
   var pinMap = document.querySelector('.tokyo__pin-map');
+  var filterForm = document.querySelector('.tokyo__filters');
+  var type = filterForm.querySelector('#housing_type');
+  var price = filterForm.querySelector('#housing_price');
+  var roomNumber = filterForm.querySelector('#housing_room-number');
+  var guestsNumber = filterForm.querySelector('#housing_guests-number');
+  var featuresList = filterForm.querySelectorAll('input[name="feature"]');
+
+  /**
+   * @param {Element} element
+   * @return {string}
+   */
+  var getValueFromFilter = function (element) {
+    return element.options[element.selectedIndex].value;
+  };
+
   var pinsList = [];
+  var cardsList = [];
 
   /**
    * render pins on the page
@@ -30,6 +48,7 @@ var load = require('./utils/load.js');
     places.forEach(function (item) {
       var pin = new PinClass(item, callback);
       pinsList.push(pin);
+      cardsList.push(new CardClass(pin));
       fragment.appendChild(pin.element);
     });
 
@@ -43,7 +62,7 @@ var load = require('./utils/load.js');
   var getActivePin = function (array) {
     return array.filter(function (item) {
       return item.active === true;
-    });
+    })[0];
   };
 
   /**
@@ -52,31 +71,48 @@ var load = require('./utils/load.js');
    */
   var showPinsAndCard = function (pin) {
     var active = getActivePin(pinsList);
-    if (active.length > 0) {
-      active.forEach(function (item) {
-        item.unsetActivePin();
-      });
+    if (active) {
+      active.unsetActive();
     }
-    pin.setActivePin();
-    var callback = getActivePin(pinsList) > 0 ? getActivePin(pinsList)[0].unsetActivePin : function () {};
-    showCard.open(pin.data, callback);
+    pin.setActive();
+    cardsList[pinsList.indexOf(pin)].show();
   };
 
   /**
    * @param {Array<Object>} places
    */
-  var onDataChange = function (places) {
+  var renderFilteredData = function (places) {
+    var active = getActivePin(pinsList);
+    if (active) {
+      cardsList[pinsList.indexOf(active)].close();
+      active.unsetActive();
+    }
     renderPins(places, function (pin) {
       showPinsAndCard(pin);
     });
-    showCard.close();
   };
+
+  var getFilteredData = function (places) {
+    var filteredPlaces = filter.byEquality(places, 'type', getValueFromFilter(type));
+    filteredPlaces = filter.bySuitablePrice(places, 'price', getValueFromFilter(price));
+    filteredPlaces = filter.byEquality(filteredPlaces, 'rooms', getValueFromFilter(roomNumber));
+    filteredPlaces = filter.byEquality(filteredPlaces, 'guests', getValueFromFilter(guestsNumber));
+    filteredPlaces = [].reduce.call(featuresList, function (previousValue, currentItem) {
+      if (currentItem.checked) {
+        var value = currentItem.getAttribute('value');
+        return filter.byPresence(previousValue, 'features', value);
+      } else {
+        return previousValue;
+      }
+    }, filteredPlaces);
+    return filteredPlaces;
+  };
+
   /**
    * @param {Array<Object>} places
    */
   var addPinsToMap = function (places) {
     dataUtils.sortPlacesByLocationY(places);
-    filter(places, onDataChange);
     if (places.length > 0) {
       var randomPlaces = dataUtils.shuffleArray(places).slice(0, MAX_NUMBER);
       renderPins(randomPlaces, function (pin) {
@@ -84,6 +120,11 @@ var load = require('./utils/load.js');
       });
       showPinsAndCard(pinsList[0]);
     }
+    filterForm.addEventListener('change', function () {
+      debounce(function () {
+        renderFilteredData(getFilteredData(places));
+      }, 500);
+    });
   };
 
   load(URL, addPinsToMap);

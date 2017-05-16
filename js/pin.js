@@ -48,7 +48,7 @@ var checkKey = require('./utils/check-key.js');
   /**
    * delete pin--active class if is exist
    */
-  Pin.prototype.unsetActivePin = function () {
+  Pin.prototype.unsetActive = function () {
     this.element.classList.remove('pin--active');
     this.active = false;
   };
@@ -56,7 +56,7 @@ var checkKey = require('./utils/check-key.js');
   /**
    * add pin--active class
    */
-  Pin.prototype.setActivePin = function () {
+  Pin.prototype.setActive = function () {
     this.element.classList.add('pin--active');
     this.active = true;
   };

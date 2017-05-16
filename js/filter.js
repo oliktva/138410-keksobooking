@@ -1,63 +1,7 @@
 'use strict';
 
-var debounce = require('./utils/debounce.js');
 
 module.exports = (function () {
-  var places = [];
-  var filteredPlaces = [];
-  var renderCallback = null;
-  var form = document.querySelector('.tokyo__filters');
-  var type = form.querySelector('#housing_type');
-  var price = form.querySelector('#housing_price');
-  var roomNumber = form.querySelector('#housing_room-number');
-  var guestsNumber = form.querySelector('#housing_guests-number');
-  var featuresList = form.querySelectorAll('input[name="feature"]');
-
-  /**
-   * @param {Element} element
-   * @return {string}
-   */
-  var getValueFromFilter = function (element) {
-    return element.options[element.selectedIndex].value;
-  };
-
-  /**
-   * @param {Array} array
-   * @param {string} field
-   * @param {string} value
-   * @param {Function} filterFunction
-   * @return {Array<Object>}
-   */
-  var getFilteredData = function (array, field, value, filterFunction) {
-    return array.filter(function (item) {
-      return filterFunction(item, field, value);
-    });
-  };
-
-  /**
-   * @param {Object} item
-   * @param {string} field
-   * @param {string} value
-   * @return {boolean}
-   */
-  var isEqual = function (item, field, value) {
-    if (field === 'guests' || field === 'rooms') {
-      return item.offer[field] === parseInt(value, 10);
-    } else {
-      return item.offer[field] === value;
-    }
-  };
-
-  /**
-   * @param {Object} item
-   * @param {string} field
-   * @param {string} value
-   * @return {boolean}
-   */
-  var isContain = function (item, field, value) {
-    return item.offer[field].indexOf(value) !== -1;
-  };
-
   /**
    * @param {Object} item
    * @param {string} field
@@ -78,47 +22,56 @@ module.exports = (function () {
   };
 
   /**
-   * @param {Object} item
+   * @param {Array<Object>} array
    * @param {string} field
    * @param {string} value
    * @return {boolean}
    */
-  var isSuitableValue = function (item, field, value) {
+  var byEquality = function (array, field, value) {
     if (value === 'any') {
-      return true;
+      return array;
     } else {
-      return isEqual(item, field, value);
+      return array.filter(function (item) {
+        return item.offer[field] + '' === value + '';
+      });
     }
   };
 
-  var filterPlaces = function () {
-    filteredPlaces = getFilteredData(places, 'type', getValueFromFilter(type), isSuitableValue);
-    filteredPlaces = getFilteredData(filteredPlaces, 'price', getValueFromFilter(price), isSuitablePrice);
-    filteredPlaces = getFilteredData(filteredPlaces, 'rooms', getValueFromFilter(roomNumber), isSuitableValue);
-    filteredPlaces = getFilteredData(filteredPlaces, 'guests', getValueFromFilter(guestsNumber), isSuitableValue);
-    filteredPlaces = [].reduce.call(featuresList, function (previousValue, currentItem) {
-      if (currentItem.checked) {
-        var value = currentItem.getAttribute('value');
-        return getFilteredData(previousValue, 'features', value, isContain);
-      } else {
-        return previousValue;
-      }
-    }, filteredPlaces);
-    renderCallback(filteredPlaces);
-  };
-
-  var onFilterChange = function () {
-    debounce(filterPlaces, 500);
+  /**
+   * @param {Array<Object>} array
+   * @param {string} field
+   * @param {string} value
+   * @return {boolean}
+   */
+  var byPresence = function (array, field, value) {
+    if (value === 'any') {
+      return array;
+    } else {
+      return array.filter(function (item) {
+        return item.offer[field].indexOf(value) !== -1;
+      });
+    }
   };
 
   /**
-   * @param {Array<Object>} data
-   * @param {Function} renderData
+   * @param {Array<Object>} array
+   * @param {string} field
+   * @param {string} value
+   * @return {boolean}
    */
-  return function (data, renderData) {
-    places = data;
-    filteredPlaces = data;
-    renderCallback = renderData;
-    form.addEventListener('change', onFilterChange);
+  var bySuitablePrice = function (array, field, value) {
+    if (value === 'any') {
+      return array;
+    } else {
+      return array.filter(function (item) {
+        return isSuitablePrice(item, field, value);
+      });
+    }
+  };
+
+  return {
+    byEquality: byEquality,
+    byPresence: byPresence,
+    bySuitablePrice: bySuitablePrice
   };
 })();
