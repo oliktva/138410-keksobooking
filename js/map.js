@@ -3,7 +3,7 @@
 var PinClass = require('./pin.js');
 var CardClass = require('./card.js');
 var dataUtils = require('./utils/data-utils.js');
-var filter = require('./filter.js');
+var filter = require('./utils/filter.js');
 var load = require('./utils/load.js');
 
 var debounce = require('./utils/debounce.js');
@@ -22,14 +22,6 @@ var debounce = require('./utils/debounce.js');
   var roomNumber = filterForm.querySelector('#housing_room-number');
   var guestsNumber = filterForm.querySelector('#housing_guests-number');
   var featuresList = filterForm.querySelectorAll('input[name="feature"]');
-
-  /**
-   * @param {Element} element
-   * @return {string}
-   */
-  var getValueFromFilter = function (element) {
-    return element.options[element.selectedIndex].value;
-  };
 
   var pinsList = [];
   var cardsList = [];
@@ -79,6 +71,26 @@ var debounce = require('./utils/debounce.js');
   };
 
   /**
+   * @param  {Array<Objects>} places
+   * @return {Array<Objects>}
+   */
+  var getFilteredData = function (places) {
+    var filteredPlaces = filter.byEquality(places, 'type', dataUtils.getValueFromFilter(type));
+    filteredPlaces = filter.bySuitablePrice(places, 'price', dataUtils.getValueFromFilter(price));
+    filteredPlaces = filter.byEquality(filteredPlaces, 'rooms', dataUtils.getValueFromFilter(roomNumber));
+    filteredPlaces = filter.byEquality(filteredPlaces, 'guests', dataUtils.getValueFromFilter(guestsNumber));
+    filteredPlaces = [].reduce.call(featuresList, function (previousValue, currentItem) {
+      if (currentItem.checked) {
+        var value = currentItem.getAttribute('value');
+        return filter.byPresence(previousValue, 'features', value);
+      } else {
+        return previousValue;
+      }
+    }, filteredPlaces);
+    return filteredPlaces;
+  };
+
+  /**
    * @param {Array<Object>} places
    */
   var renderFilteredData = function (places) {
@@ -90,22 +102,6 @@ var debounce = require('./utils/debounce.js');
     renderPins(places, function (pin) {
       showPinsAndCard(pin);
     });
-  };
-
-  var getFilteredData = function (places) {
-    var filteredPlaces = filter.byEquality(places, 'type', getValueFromFilter(type));
-    filteredPlaces = filter.bySuitablePrice(places, 'price', getValueFromFilter(price));
-    filteredPlaces = filter.byEquality(filteredPlaces, 'rooms', getValueFromFilter(roomNumber));
-    filteredPlaces = filter.byEquality(filteredPlaces, 'guests', getValueFromFilter(guestsNumber));
-    filteredPlaces = [].reduce.call(featuresList, function (previousValue, currentItem) {
-      if (currentItem.checked) {
-        var value = currentItem.getAttribute('value');
-        return filter.byPresence(previousValue, 'features', value);
-      } else {
-        return previousValue;
-      }
-    }, filteredPlaces);
-    return filteredPlaces;
   };
 
   /**

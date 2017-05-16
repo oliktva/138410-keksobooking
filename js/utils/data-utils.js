@@ -63,10 +63,19 @@ module.exports = (function () {
     }
   };
 
+  /**
+   * @param {Element} element
+   * @return {string}
+   */
+  var getValueFromFilter = function (element) {
+    return element.options[element.selectedIndex].value;
+  };
+
   return {
     TYPES_MAP: TYPES_MAP,
     shuffleArray: shuffleArray,
     getFormattedPrice: getFormattedPrice,
-    sortPlacesByLocationY: sortPlacesByLocationY
+    sortPlacesByLocationY: sortPlacesByLocationY,
+    getValueFromFilter: getValueFromFilter
   };
 })();

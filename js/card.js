@@ -61,17 +61,13 @@ var checkKey = require('./utils/check-key.js');
     };
   };
 
-  var render = function (card) {
-    offerDialog.replaceChild(card.element.cloneNode(true), offerDialog.querySelector('.dialog__panel'));
-    offerDialog.querySelector('.dialog__title').querySelector('img').setAttribute('src', getAvatar(card.pin.data));
+  Card.prototype.render = function () {
+    offerDialog.replaceChild(this.element.cloneNode(true), offerDialog.querySelector('.dialog__panel'));
+    offerDialog.querySelector('.dialog__title').querySelector('img').setAttribute('src', getAvatar(this.pin.data));
   };
 
-  /**
-   * open dialog window
-   * @param {Place} place
-   */
   Card.prototype.show = function () {
-    render(this);
+    this.render();
     if (visibility.isElementInvisible(offerDialog)) {
       visibility.setElementVisible(offerDialog, true);
     }
